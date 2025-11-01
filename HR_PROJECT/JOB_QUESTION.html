@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HR Connect Pro | Selection Questions Portal</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #4361ee;
+            --secondary: #3a0ca3;
+            --accent: #f72585;
+            --success: #4bb543;
+            --warning: #ffc107;
+            --danger: #dc3545;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --white: #ffffff;
+            --card-bg: rgba(255, 255, 255, 0.85);
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            --card-border-radius: 20px;
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            color: var(--dark);
+            background: linear-gradient(-45deg, #7209b7, #3a0ca3, #4361ee, #4cc9f0);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Animated background elements */
+        .bg-bubbles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .bg-bubbles li {
+            position: absolute;
+            list-style: none;
+            display: block;
+            width: 40px;
+            height: 40px;
+            background-color: rgba(255, 255, 255, 0.15);
+            bottom: -160px;
+            border-radius: 50%;
+            animation: square 25s infinite;
+            transition-timing-function: linear;
+        }
+
+        .bg-bubbles li:nth-child(1) { left: 10%; animation-delay: 0s; width: 80px; height: 80px; }
+        .bg-bubbles li:nth-child(2) { left: 20%; animation-delay: 2s; animation-duration: 17s; width: 60px; height: 60px; }
+        .bg-bubbles li:nth-child(3) { left: 25%; animation-delay: 4s; width: 120px; height: 120px; }
+        .bg-bubbles li:nth-child(4) { left: 40%; animation-delay: 0s; animation-duration: 22s; width: 160px; height: 160px; }
+        .bg-bubbles li:nth-child(5) { left: 70%; animation-delay: 3s; width: 100px; height: 100px; }
+        .bg-bubbles li:nth-child(6) { left: 80%; animation-delay: 2s; width: 120px; height: 120px; }
+        .bg-bubbles li:nth-child(7) { left: 32%; animation-delay: 6s; width: 140px; height: 140px; }
+        .bg-bubbles li:nth-child(8) { left: 55%; animation-delay: 8s; animation-duration: 18s; width: 40px; height: 40px; }
+        .bg-bubbles li:nth-child(9) { left: 25%; animation-delay: 2s; animation-duration: 20s; width: 20px; height: 20px; }
+        .bg-bubbles li:nth-child(10) { left: 90%; animation-delay: 4s; width: 80px; height: 80px; }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; }
+        }
+
+        @keyframes square {
+            0% { transform: translateY(0) rotate(0deg); opacity: 1; border-radius: 50%; }
+            100% { transform: translateY(-1000px) rotate(720deg); opacity: 0; border-radius: 50%; }
+        }
+
+        /* Navigation */
+        .navbar { position: fixed; top: 0; left: 0; width: 100%; background-color: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); box-shadow: var(--shadow); padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; z-index: 1000; }
+        .logo { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 1.5rem; color: var(--primary); }
+        .logo i { font-size: 2rem; }
+        .nav-links { display: flex; gap: 2rem; }
+        .nav-links a { text-decoration: none; color: var(--dark); font-weight: 500; transition: var(--transition); padding: 0.5rem 1rem; border-radius: 8px; }
+        .nav-links a:hover, .nav-links a.active { background-color: var(--primary); color: var(--white); }
+        .user-menu { display: flex; align-items: center; gap: 1rem; }
+        .user-avatar { width: 40px; height: 40px; border-radius: 50%; background-color: var(--primary); color: white; display: flex; align-items: center; justify-content: center; font-weight: bold; }
+        .logout-btn { background: var(--danger); color: white; border: none; padding: 0.5rem 1rem; border-radius: 8px; cursor: pointer; display: flex; align-items: center; gap: 0.5rem; transition: var(--transition); font-weight: 500; }
+        .logout-btn:hover { background: #c82333; transform: translateY(-2px); }
+
+        /* Main Content */
+        .main-container { margin-top: 80px; padding: 2rem; display: flex; flex-direction: column; align-items: center; }
+        .page { width: 100%; max-width: 1200px; background: var(--card-bg); backdrop-filter: blur(10px); border-radius: var(--card-border-radius); box-shadow: var(--shadow); overflow: hidden; border: 1px solid rgba(255, 255, 255, 0.5); padding: 2rem; margin-bottom: 2rem; }
+        .page-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; padding-bottom: 1rem; border-bottom: 1px solid #eee; }
+        .page-title { font-size: 1.8rem; color: var(--primary); font-weight: 700; }
+        .page-subtitle { color: #666; margin-top: 0.5rem; }
+
+        /* AI Candidate Analysis Hub */
+        .ai-candidate-analysis { display: flex; gap: 2rem; background: white; border-radius: 12px; padding: 1.5rem; margin-bottom: 2rem; border-left: 4px solid var(--secondary); }
+        .webcam-container { flex: 1; }
+        .webcam-feed { width: 100%; border-radius: 8px; background: #333; aspect-ratio: 16 / 9; object-fit: cover; transform: scaleX(-1); }
+        .webcam-controls { display: flex; gap: 1rem; margin-top: 1rem; }
+        .ai-feedback-container { flex: 1; }
+        .ai-feedback-title { font-size: 1.2rem; font-weight: 600; color: var(--secondary); margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem; }
+        #ai-feedback-box { background: #f0f2f5; border-radius: 8px; padding: 1rem; min-height: 100px; }
+        #ai-feedback-box p { margin: 0; font-style: italic; color: #555; }
+        .feedback-item { display: flex; align-items: center; gap: 0.5rem; padding: 0.5rem 0; animation: fadeIn 0.5s; }
+        .feedback-item .fa-check-circle { color: var(--success); }
+        .feedback-item .fa-exclamation-triangle { color: var(--warning); }
+
+        /* Candidate Evaluation Section */
+        .candidate-evaluation { display: flex; gap: 2rem; background: white; border-radius: 12px; padding: 1.5rem; margin-bottom: 2rem; border-left: 4px solid var(--secondary); }
+        .candidate-info { flex: 1; }
+        .candidate-name { font-size: 1.5rem; font-weight: 700; color: var(--secondary); margin-bottom: 0.5rem; }
+        .candidate-details { display: flex; flex-wrap: wrap; gap: 1rem; margin-bottom: 1rem; }
+        .detail-item { display: flex; align-items: center; gap: 0.5rem; }
+        .evaluation-form { flex: 1; }
+        .rating-section { margin-bottom: 1rem; }
+        .rating-label { font-weight: 600; margin-bottom: 0.5rem; }
+        .rating-stars { display: flex; gap: 0.5rem; }
+        .star { color: #ddd; cursor: pointer; font-size: 1.2rem; transition: var(--transition); }
+        .star.active { color: var(--warning); }
+        .notes-section { margin-top: 1rem; }
+        .notes-label { font-weight: 600; margin-bottom: 0.5rem; }
+        .notes-input { width: 100%; padding: 0.8rem; border: 1px solid #ddd; border-radius: 8px; font-family: inherit; resize: vertical; min-height: 80px; }
+
+        /* HR Questions */
+        .questions-container { display: flex; flex-direction: column; gap: 1.5rem; }
+        .question-card { background: white; border-radius: 12px; padding: 1.5rem; box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05); transition: var(--transition); border-left: 4px solid var(--primary); }
+        .question-card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1); }
+        .question-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem; cursor: pointer; }
+        .question-text { font-size: 1.1rem; font-weight: 600; color: var(--dark); flex: 1; margin-right: 1rem; }
+        .question-toggle { background: none; border: none; color: var(--primary); font-size: 1.2rem; cursor: pointer; transition: var(--transition); width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+        .question-toggle:hover { background: #f0f0f0; }
+        .question-answer { display: none; padding-top: 1rem; border-top: 1px solid #f0f0f0; animation: fadeIn 0.5s ease; }
+        .question-answer.active { display: block; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+
+        .answer-content { color: #555; line-height: 1.6; margin-bottom: 1rem; }
+        .answer-tips { background: #f8f9fa; border-radius: 8px; padding: 1rem; margin-top: 1rem; }
+        .tips-title { font-weight: 600; color: var(--primary); margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem; }
+        .tips-list { list-style-type: none; padding-left: 0; }
+        .tips-list li { padding: 0.3rem 0; display: flex; align-items: flex-start; gap: 0.5rem; }
+        .tips-list li:before { content: "•"; color: var(--primary); font-weight: bold; }
+
+        .response-section { margin-top: 1rem; padding: 1rem; background: #e3f2fd; border-radius: 8px; border-left: 4px solid var(--primary); }
+        .response-title { font-weight: 600; color: var(--primary); margin-bottom: 0.5rem; }
+        .response-input { width: 100%; padding: 0.8rem; border: 1px solid #ddd; border-radius: 8px; margin-bottom: 0.5rem; font-family: inherit; resize: vertical; min-height: 100px; }
+        .response-actions { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
+        .action-group { display: flex; gap: 0.5rem; }
+        .btn { padding: 0.5rem 1rem; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; transition: var(--transition); display: inline-flex; align-items: center; gap: 0.5rem; }
+        .btn-primary { background: var(--primary); color: white; }
+        .btn-success { background: var(--success); color: white; }
+        .btn-danger { background: var(--danger); color: white; }
+        .btn-outline { background: transparent; border: 1px solid var(--primary); color: var(--primary); }
+        .btn:hover { transform: translateY(-2px); box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1); }
+        .btn:disabled { background: #ccc; cursor: not-allowed; transform: none; box-shadow: none; }
+        
+        /* Timer & Audio Styles */
+        .timer-container { font-size: 1rem; font-weight: 600; color: var(--dark); }
+        .audio-player { margin-top: 1rem; }
+        .audio-player audio { width: 100%; border-radius: 20px; }
+        .hidden { display: none; }
+        
+        /* AI Text Feedback */
+        .ai-text-feedback { background: #fff; border: 1px solid #eee; border-radius: 8px; padding: 1rem; margin-top: 1rem; font-size: 0.9rem; }
+        .ai-text-feedback h4 { margin: 0 0 0.5rem; color: var(--primary); }
+        .ai-text-feedback ul { list-style: none; padding-left: 0; }
+        .ai-text-feedback li { margin-bottom: 0.25rem; }
+
+        /* Progress Section */
+        .progress-section { background: white; border-radius: 12px; padding: 1.5rem; box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05); margin-top: 2rem; }
+        .progress-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; }
+        .progress-title { font-size: 1.2rem; font-weight: 600; color: var(--primary); }
+        .progress-stats { display: flex; gap: 2rem; text-align: center; }
+        .progress-stat { display: flex; flex-direction: column; align-items: center; }
+        .progress-value { font-size: 1.5rem; font-weight: 700; color: var(--primary); }
+        .progress-label { font-size: 0.8rem; color: #666; }
+        .progress-bar { height: 8px; background: #e9ecef; border-radius: 4px; margin: 1rem 0; overflow: hidden; }
+        .progress-fill { height: 100%; background: linear-gradient(90deg, var(--primary), var(--accent)); border-radius: 4px; width: 0%; transition: width 0.5s ease; }
+        
+        .action-buttons { display: flex; gap: 1rem; margin-top: 2rem; justify-content: center; }
+
+        /* Responsive */
+        @media (max-width: 992px) {
+            .ai-candidate-analysis, .candidate-evaluation { flex-direction: column; }
+        }
+        @media (max-width: 768px) {
+            .navbar { padding: 1rem; }
+            .nav-links { display: none; }
+            .main-container { padding: 1rem; }
+            .page { padding: 1.5rem; }
+            .question-header { flex-direction: column; gap: 1rem; }
+            .question-toggle { align-self: flex-end; }
+            .progress-header { flex-direction: column; gap: 1rem; text-align: center; }
+            .progress-stats { flex-direction: column; gap: 1rem; }
+            .action-buttons { flex-direction: column; }
+            .response-actions { flex-direction: column; align-items: stretch; }
+            .action-group, .timer-container { justify-content: center; }
+        }
+    </style>
+</head>
+<body>
+    <ul class="bg-bubbles"><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li></ul>
+
+    <div id="hr-selection-questions">
+        <nav class="navbar">
+            <div class="logo"><i class="fas fa-handshake"></i><span>HR Connect Pro</span></div>
+            <div class="nav-links">
+                <a href="#" class="active"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+                <a href="JOB_Application.html"><i class="fas fa-tasks"></i> Application Status</a>
+                <a href="JOBs_Section.html"><i class="fas fa-briefcase"></i> Job Search</a>
+                <a href="JOB_Resume.html"><i class="fas fa-file-alt"></i> My Resume</a>
+                
+            </div>
+            <div class="user-menu">
+                <div class="user-avatar">HR</div>
+                <span>HR Manager</span>
+                <button class="logout-btn" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Logout</button>
+            </div>
+        </nav>
+
+        <div class="main-container">
+            <div class="page">
+                <div class="page-header">
+                    <div>
+                        <h1 class="page-title">Candidate Evaluation</h1>
+                        <p class="page-subtitle">Evaluate candidates using structured interview questions and AI analysis</p>
+                    </div>
+                    <button class="btn btn-primary"><i class="fas fa-download"></i> Export Evaluation</button>
+                </div>
+
+                <!-- AI Candidate Analysis Hub -->
+                <div class="ai-candidate-analysis">
+                    <div class="webcam-container">
+                        <video id="webcamFeed" class="webcam-feed" autoplay playsinline muted></video>
+                        <div class="webcam-controls">
+                            <button id="startWebcamBtn" class="btn btn-primary"><i class="fas fa-video"></i> Start Camera</button>
+                            <button id="stopWebcamBtn" class="btn btn-danger" disabled><i class="fas fa-video-slash"></i> Stop Camera</button>
+                        </div>
+                    </div>
+                    <div class="ai-feedback-container">
+                        <h3 class="ai-feedback-title"><i class="fas fa-robot"></i> AI Candidate Analysis</h3>
+                        <div id="ai-feedback-box">
+                            <p>Start the camera to get real-time analysis of candidate's body language and communication cues.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Candidate Evaluation Section -->
+                <div class="candidate-evaluation">
+                    <div class="candidate-info">
+                        <h2 class="candidate-name">Sarah Johnson</h2>
+                        <div class="candidate-details">
+                            <div class="detail-item"><i class="fas fa-briefcase"></i> Senior Marketing Manager</div>
+                            <div class="detail-item"><i class="fas fa-clock"></i> 10+ years experience</div>
+                            <div class="detail-item"><i class="fas fa-map-marker-alt"></i> New York, NY</div>
+                        </div>
+                        <div class="detail-item"><i class="fas fa-star"></i> Overall Rating: <span id="overall-rating">Not rated</span></div>
+                    </div>
+                    <div class="evaluation-form">
+                        <div class="rating-section">
+                            <div class="rating-label">Communication Skills:</div>
+                            <div class="rating-stars" data-rating="communication">
+                                <i class="fas fa-star star" data-value="1"></i>
+                                <i class="fas fa-star star" data-value="2"></i>
+                                <i class="fas fa-star star" data-value="3"></i>
+                                <i class="fas fa-star star" data-value="4"></i>
+                                <i class="fas fa-star star" data-value="5"></i>
+                            </div>
+                        </div>
+                        <div class="rating-section">
+                            <div class="rating-label">Technical Skills:</div>
+                            <div class="rating-stars" data-rating="technical">
+                                <i class="fas fa-star star" data-value="1"></i>
+                                <i class="fas fa-star star" data-value="2"></i>
+                                <i class="fas fa-star star" data-value="3"></i>
+                                <i class="fas fa-star star" data-value="4"></i>
+                                <i class="fas fa-star star" data-value="5"></i>
+                            </div>
+                        </div>
+                        <div class="rating-section">
+                            <div class="rating-label">Cultural Fit:</div>
+                            <div class="rating-stars" data-rating="cultural">
+                                <i class="fas fa-star star" data-value="1"></i>
+                                <i class="fas fa-star star" data-value="2"></i>
+                                <i class="fas fa-star star" data-value="3"></i>
+                                <i class="fas fa-star star" data-value="4"></i>
+                                <i class="fas fa-star star" data-value="5"></i>
+                            </div>
+                        </div>
+                        <div class="notes-section">
+                            <div class="notes-label">Overall Notes:</div>
+                            <textarea class="notes-input" placeholder="Add your overall evaluation notes here..."></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="questions-container" id="questionsList">
+                    <!-- Questions will be dynamically generated by JS -->
+                </div>
+
+                <!-- Progress Section -->
+                <div class="progress-section">
+                    <div class="progress-header">
+                        <h3 class="progress-title">Evaluation Progress</h3>
+                        <div class="progress-stats">
+                            <div class="progress-stat">
+                                <div class="progress-value" id="viewedCount">0 / 7</div>
+                                <div class="progress-label">Questions Evaluated</div>
+                            </div>
+                            <div class="progress-stat">
+                                <div class="progress-value" id="savedCount">0 / 7</div>
+                                <div class="progress-label">Notes Saved</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progressFill"></div>
+                    </div>
+                </div>
+
+                <div class="action-buttons">
+                    <button class="btn btn-primary" onclick="alert('Saving evaluation...')"><i class="fas fa-save"></i> Save Evaluation</button>
+                    <button class="btn btn-success" onclick="alert('Submitting final evaluation...')"><i class="fas fa-check-circle"></i> Submit Final Evaluation</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    const questionsData = [
+        {
+            id: 1,
+            question: "Tell me about yourself.",
+            guidance: "This question helps assess the candidate's communication skills, confidence, and ability to present themselves professionally.",
+            tips: [
+                "Look for a concise, professional summary",
+                "Note if they connect their background to the role",
+                "Assess their communication clarity and confidence",
+                "Evaluate if they highlight relevant experience"
+            ]
+        },
+        {
+            id: 2,
+            question: "What are your greatest strengths?",
+            guidance: "This question helps identify if the candidate's strengths align with the job requirements.",
+            tips: [
+                "Check if strengths match job requirements",
+                "Look for specific examples and quantifiable results",
+                "Assess self-awareness and honesty",
+                "Note if they explain how strengths benefit the role"
+            ]
+        },
+        {
+            id: 3,
+            question: "What is your greatest weakness?",
+            guidance: "This question evaluates self-awareness, honesty, and the candidate's approach to personal development.",
+            tips: [
+                "Look for genuine, fixable weaknesses",
+                "Assess if they show improvement efforts",
+                "Note if they avoid clichéd answers",
+                "Evaluate their problem-solving approach"
+            ]
+        },
+        {
+            id: 4,
+            question: "Why do you want to work here?",
+            guidance: "This assesses the candidate's motivation, research, and understanding of your company.",
+            tips: [
+                "Check if they've researched the company",
+                "Look for alignment with company values/mission",
+                "Assess enthusiasm and genuine interest",
+                "Note if they connect their skills to company needs"
+            ]
+        },
+        {
+            id: 5,
+            question: "Where do you see yourself in 5 years?",
+            guidance: "This helps determine if the candidate's career goals align with what your company can offer.",
+            tips: [
+                "Look for realistic career progression",
+                "Assess alignment with company growth opportunities",
+                "Note if they focus on skill development",
+                "Evaluate long-term commitment potential"
+            ]
+        },
+        {
+            id: 6,
+            question: "Why are you leaving your current job?",
+            guidance: "This question checks motivations and professionalism when discussing previous employment.",
+            tips: [
+                "Look for positive, growth-focused reasons",
+                "Assess professionalism (no negative comments)",
+                "Note if they connect reason to this opportunity",
+                "Evaluate honesty and transparency"
+            ]
+        },
+        {
+            id: 7,
+            question: "Tell me about a challenging situation and how you handled it.",
+            guidance: "This behavioral question assesses problem-solving skills, resilience, and approach to challenges.",
+            tips: [
+                "Look for specific examples with details",
+                "Assess problem-solving approach",
+                "Note lessons learned and growth",
+                "Evaluate resilience and adaptability"
+            ]
+        }
+    ];
+
+    const progress = {
+        viewed: new Set(),
+        saved: new Set()
+    };
+    
+    // Dynamically generate question cards
+    function renderQuestions() {
+        const container = document.getElementById('questionsList');
+        container.innerHTML = questionsData.map(q => `
+            <div class="question-card" data-question-id="${q.id}">
+                <div class="question-header">
+                    <div class="question-text">${q.id}. "${q.question}"</div>
+                    <button class="question-toggle"><i class="fas fa-chevron-down"></i></button>
+                </div>
+                <div class="question-answer">
+                    <div class="answer-content">
+                        <p>${q.guidance}</p>
+                        <div class="answer-tips">
+                            <div class="tips-title"><i class="fas fa-search"></i> Evaluation Criteria:</div>
+                            <ul class="tips-list">
+                                ${q.tips.map(tip => `<li>${tip}</li>`).join('')}
+                            </ul>
+                        </div>
+                        <div class="response-section">
+                            <div class="response-title">Candidate Response & Your Notes:</div>
+                            <textarea class="response-input" placeholder="Record the candidate's response and your evaluation notes here..."></textarea>
+                            <div class="ai-text-feedback hidden"></div>
+                            <div class="response-actions">
+                                <div class="action-group">
+                                    <button class="btn btn-success btn-save"><i class="fas fa-save"></i> Save Notes</button>
+                                    <button class="btn btn-primary btn-record"><i class="fas fa-microphone"></i> Record</button>
+                                    <button class="btn btn-danger btn-stop-record hidden"><i class="fas fa-stop"></i> Stop</button>
+                                </div>
+                                <div class="timer-container">
+                                    <i class="fas fa-clock"></i> <span class="timer-display">00:00</span>
+                                    <button class="btn btn-outline btn-timer-start" style="padding: 0.3rem 0.6rem;"><i class="fas fa-play"></i></button>
+                                    <button class="btn btn-outline btn-timer-stop hidden" style="padding: 0.3rem 0.6rem;"><i class="fas fa-pause"></i></button>
+                                </div>
+                            </div>
+                            <div class="audio-player hidden">
+                               <p><strong>Your Recording:</strong></p>
+                               <audio controls></audio>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `).join('');
+        addEventListeners();
+    }
+
+    function addEventListeners() {
+        document.querySelectorAll('.question-header').forEach(header => {
+            header.addEventListener('click', toggleAnswer);
+        });
+        document.querySelectorAll('.btn-save').forEach(btn => {
+            btn.addEventListener('click', handleSaveNotes);
+        });
+        setupAudioRecorders();
+        setupTimers();
+        setupStarRatings();
+    }
+    
+    function toggleAnswer(event) {
+        const card = event.currentTarget.closest('.question-card');
+        const answer = card.querySelector('.question-answer');
+        const toggleIcon = card.querySelector('.question-toggle i');
+        const questionId = parseInt(card.dataset.questionId);
+
+        if (answer.classList.toggle('active')) {
+            toggleIcon.classList.replace('fa-chevron-down', 'fa-chevron-up');
+            progress.viewed.add(questionId);
+        } else {
+            toggleIcon.classList.replace('fa-chevron-up', 'fa-chevron-down');
+        }
+        updateProgress();
+    }
+
+    function handleSaveNotes(event) {
+        const card = event.currentTarget.closest('.question-card');
+        const questionId = parseInt(card.dataset.questionId);
+        const textarea = card.querySelector('.response-input');
+        const feedbackBox = card.querySelector('.ai-text-feedback');
+        
+        if (textarea.value.trim() !== '') {
+            progress.saved.add(questionId);
+            updateProgress();
+            
+            // AI text analysis
+            analyzeNotes(textarea.value, feedbackBox);
+
+            const btn = event.currentTarget;
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-check"></i> Saved!';
+            btn.disabled = true;
+            setTimeout(() => {
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+            }, 2000);
+        } else {
+            alert('Please add evaluation notes before saving.');
+        }
+    }
+    
+    function updateProgress() {
+        document.getElementById('viewedCount').textContent = `${progress.viewed.size} / ${questionsData.length}`;
+        document.getElementById('savedCount').textContent = `${progress.saved.size} / ${questionsData.length}`;
+        
+        const totalPoints = questionsData.length * 2; // 1 pt for view, 1 pt for save
+        const earnedPoints = progress.viewed.size + progress.saved.size;
+        const percentage = totalPoints > 0 ? (earnedPoints / totalPoints) * 100 : 0;
+        
+        document.getElementById('progressFill').style.width = `${percentage}%`;
+    }
+
+    // --- Webcam Functionality ---
+    const webcamFeed = document.getElementById('webcamFeed');
+    const startWebcamBtn = document.getElementById('startWebcamBtn');
+    const stopWebcamBtn = document.getElementById('stopWebcamBtn');
+    const feedbackBox = document.getElementById('ai-feedback-box');
+    let stream;
+    let postureInterval;
+
+    startWebcamBtn.addEventListener('click', async () => {
+        try {
+            stream = await navigator.mediaDevices.getUserMedia({ video: true });
+            webcamFeed.srcObject = stream;
+            startWebcamBtn.disabled = true;
+            stopWebcamBtn.disabled = false;
+            startCandidateAnalysis();
+        } catch (err) {
+            console.error("Error accessing webcam:", err);
+            feedbackBox.innerHTML = '<p style="color:var(--danger);">Could not access webcam. Please check permissions.</p>';
+        }
+    });
+
+    stopWebcamBtn.addEventListener('click', () => {
+        if (stream) {
+            stream.getTracks().forEach(track => track.stop());
+            webcamFeed.srcObject = null;
+            startWebcamBtn.disabled = false;
+            stopWebcamBtn.disabled = true;
+            stopCandidateAnalysis();
+        }
+    });
+
+    function startCandidateAnalysis() {
+        const positiveFeedback = [
+            "<i class='fas fa-check-circle'></i> Candidate maintains good eye contact",
+            "<i class='fas fa-check-circle'></i> Confident posture and body language",
+            "<i class='fas fa-check-circle'></i> Engaged and attentive during conversation",
+            "<i class='fas fa-check-circle'></i> Natural gestures that complement speech",
+            "<i class='fas fa-check-circle'></i> Appropriate smiling and facial expressions"
+        ];
+        const constructiveFeedback = [
+            "<i class='fas fa-exclamation-triangle'></i> Candidate appears slightly nervous",
+            "<i class='fas fa-exclamation-triangle'></i> Limited eye contact with interviewer",
+            "<i class='fas fa-exclamation-triangle'></i> Some fidgeting observed",
+            "<i class='fas fa-exclamation-triangle'></i> Posture could be more confident",
+            "<i class='fas fa-exclamation-triangle'></i> Minimal use of hand gestures"
+        ];
+        feedbackBox.innerHTML = '';
+        postureInterval = setInterval(() => {
+            const feedbackPool = Math.random() > 0.4 ? positiveFeedback : constructiveFeedback;
+            const feedback = feedbackPool[Math.floor(Math.random() * feedbackPool.length)];
+            const p = document.createElement('p');
+            p.className = 'feedback-item';
+            p.innerHTML = feedback;
+            feedbackBox.prepend(p);
+            if (feedbackBox.childElementCount > 4) {
+                feedbackBox.removeChild(feedbackBox.lastChild);
+            }
+        }, 4000);
+    }
+
+    function stopCandidateAnalysis() {
+        clearInterval(postureInterval);
+        feedbackBox.innerHTML = '<p>Candidate analysis stopped. Start the camera to begin again.</p>';
+    }
+
+    // --- Star Rating Functionality ---
+    function setupStarRatings() {
+        document.querySelectorAll('.star').forEach(star => {
+            star.addEventListener('click', function() {
+                const ratingType = this.closest('.rating-stars').dataset.rating;
+                const value = parseInt(this.dataset.value);
+                const stars = this.closest('.rating-stars').querySelectorAll('.star');
+                
+                // Update stars
+                stars.forEach((s, index) => {
+                    if (index < value) {
+                        s.classList.add('active');
+                    } else {
+                        s.classList.remove('active');
+                    }
+                });
+                
+                // Update overall rating
+                updateOverallRating();
+            });
+        });
+    }
+    
+    function updateOverallRating() {
+        const ratingTypes = ['communication', 'technical', 'cultural'];
+        let totalRating = 0;
+        let ratedCount = 0;
+        
+        ratingTypes.forEach(type => {
+            const activeStars = document.querySelectorAll(`[data-rating="${type}"] .star.active`);
+            if (activeStars.length > 0) {
+                totalRating += activeStars.length;
+                ratedCount++;
+            }
+        });
+        
+        if (ratedCount > 0) {
+            const avgRating = (totalRating / ratedCount).toFixed(1);
+            document.getElementById('overall-rating').textContent = `${avgRating}/5`;
+        } else {
+            document.getElementById('overall-rating').textContent = 'Not rated';
+        }
+    }
+
+    // --- Audio Recording Functionality ---
+    function setupAudioRecorders() {
+        document.querySelectorAll('.question-card').forEach(card => {
+            const recordBtn = card.querySelector('.btn-record');
+            const stopBtn = card.querySelector('.btn-stop-record');
+            const audioPlayerContainer = card.querySelector('.audio-player');
+            const audioEl = audioPlayerContainer.querySelector('audio');
+            let mediaRecorder;
+            let audioChunks = [];
+
+            recordBtn.onclick = async () => {
+                try {
+                    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                    mediaRecorder = new MediaRecorder(stream);
+                    mediaRecorder.start();
+                    
+                    audioChunks = [];
+                    mediaRecorder.addEventListener("dataavailable", event => {
+                        audioChunks.push(event.data);
+                    });
+
+                    mediaRecorder.onstop = () => {
+                        const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
+                        const audioUrl = URL.createObjectURL(audioBlob);
+                        audioEl.src = audioUrl;
+                        audioPlayerContainer.classList.remove('hidden');
+                        stream.getTracks().forEach(track => track.stop()); // Release mic
+                    };
+                    
+                    recordBtn.classList.add('hidden');
+                    stopBtn.classList.remove('hidden');
+                } catch (err) {
+                    alert('Microphone access denied. Please allow microphone access in your browser settings.');
+                    console.error(err);
+                }
+            };
+            
+            stopBtn.onclick = () => {
+                if (mediaRecorder && mediaRecorder.state === 'recording') {
+                    mediaRecorder.stop();
+                    stopBtn.classList.add('hidden');
+                    recordBtn.classList.remove('hidden');
+                }
+            };
+        });
+    }
+
+    // --- Timer Functionality ---
+    function setupTimers() {
+        document.querySelectorAll('.timer-container').forEach(container => {
+            const display = container.querySelector('.timer-display');
+            const startBtn = container.querySelector('.btn-timer-start');
+            const stopBtn = container.querySelector('.btn-timer-stop');
+            let timerInterval;
+            let seconds = 0;
+
+            function updateDisplay() {
+                const mins = Math.floor(seconds / 60).toString().padStart(2, '0');
+                const secs = (seconds % 60).toString().padStart(2, '0');
+                display.textContent = `${mins}:${secs}`;
+            }
+
+            startBtn.onclick = () => {
+                startBtn.classList.add('hidden');
+                stopBtn.classList.remove('hidden');
+                timerInterval = setInterval(() => {
+                    seconds++;
+                    updateDisplay();
+                }, 1000);
+            };
+
+            stopBtn.onclick = () => {
+                stopBtn.classList.add('hidden');
+                startBtn.classList.remove('hidden');
+                clearInterval(timerInterval);
+                seconds = 0; // Reset on stop
+                updateDisplay();
+            };
+        });
+    }
+    
+    // --- AI Text Analysis (Simulated) ---
+    function analyzeNotes(text, feedbackBox) {
+        let feedback = '<h4><i class="fas fa-magic"></i> AI Analysis:</h4><ul>';
+        const wordCount = text.trim().split(/\s+/).length;
+
+        // 1. Length Check
+        if (wordCount < 30) {
+            feedback += `<li><i class="fas fa-exclamation-triangle" style="color:var(--warning)"></i> Your notes are quite brief (${wordCount} words). Consider adding more details about the candidate's response.</li>`;
+        } else if (wordCount > 300) {
+            feedback += `<li><i class="fas fa-exclamation-triangle" style="color:var(--warning)"></i> Your notes are quite long (${wordCount} words). Try to focus on key observations.</li>`;
+        } else {
+            feedback += `<li><i class="fas fa-check-circle" style="color:var(--success)"></i> Good note length (${wordCount} words). Balanced detail.</li>`;
+        }
+
+        // 2. Evaluation Terms Check
+        const evaluationTerms = ['strength', 'weakness', 'improvement', 'positive', 'negative', 'recommend', 'concern', 'excellent', 'poor'];
+        const foundTerms = text.toLowerCase().match(new RegExp(evaluationTerms.join('|'), 'g')) || [];
+        if (foundTerms.length > 2) {
+            feedback += `<li><i class="fas fa-check-circle" style="color:var(--success)"></i> Good use of evaluation terms (${foundTerms.length} found).</li>`;
+        } else {
+            feedback += `<li><i class="fas fa-exclamation-triangle" style="color:var(--warning)"></i> Consider using more specific evaluation terms to clarify your assessment.</li>`;
+        }
+        
+        feedback += '</ul>';
+        feedbackBox.innerHTML = feedback;
+        feedbackBox.classList.remove('hidden');
+    }
+
+    // --- Logout Functionality ---
+    document.getElementById('logoutBtn').addEventListener('click', function() {
+        if (confirm('Are you sure you want to logout?')) {
+            window.location.href = 'index.html';
+        }
+    });
+
+    // Initialize the page
+    document.addEventListener('DOMContentLoaded', () => {
+        renderQuestions();
+        updateProgress();
+    });
+
+    </script>
+</body>
+</html>

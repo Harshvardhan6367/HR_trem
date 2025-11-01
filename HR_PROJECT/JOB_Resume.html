@@ -1,0 +1,1853 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HR Connect Pro | My Resume</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #4361ee;
+            --secondary: #3a0ca3;
+            --accent: #f72585;
+            --success: #4bb543;
+            --warning: #ffc107;
+            --danger: #dc3545;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --white: #ffffff;
+            --card-bg: rgba(255, 255, 255, 0.85);
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            --card-border-radius: 20px;
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            color: var(--dark);
+            background: linear-gradient(-45deg, #7209b7, #3a0ca3, #4361ee, #4cc9f0);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Animated background elements */
+        .bg-bubbles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .bg-bubbles li {
+            position: absolute;
+            list-style: none;
+            display: block;
+            width: 40px;
+            height: 40px;
+            background-color: rgba(255, 255, 255, 0.15);
+            bottom: -160px;
+            border-radius: 50%;
+            animation: square 25s infinite;
+            transition-timing-function: linear;
+        }
+
+        .bg-bubbles li:nth-child(1) {
+            left: 10%;
+            animation-delay: 0s;
+            width: 80px;
+            height: 80px;
+        }
+
+        .bg-bubbles li:nth-child(2) {
+            left: 20%;
+            animation-delay: 2s;
+            animation-duration: 17s;
+            width: 60px;
+            height: 60px;
+        }
+
+        .bg-bubbles li:nth-child(3) {
+            left: 25%;
+            animation-delay: 4s;
+            width: 120px;
+            height: 120px;
+        }
+
+        .bg-bubbles li:nth-child(4) {
+            left: 40%;
+            animation-delay: 0s;
+            animation-duration: 22s;
+            width: 160px;
+            height: 160px;
+        }
+
+        .bg-bubbles li:nth-child(5) {
+            left: 70%;
+            animation-delay: 3s;
+            width: 100px;
+            height: 100px;
+        }
+
+        .bg-bubbles li:nth-child(6) {
+            left: 80%;
+            animation-delay: 2s;
+            width: 120px;
+            height: 120px;
+        }
+
+        .bg-bubbles li:nth-child(7) {
+            left: 32%;
+            animation-delay: 6s;
+            width: 140px;
+            height: 140px;
+        }
+
+        .bg-bubbles li:nth-child(8) {
+            left: 55%;
+            animation-delay: 8s;
+            animation-duration: 18s;
+            width: 40px;
+            height: 40px;
+        }
+
+        .bg-bubbles li:nth-child(9) {
+            left: 25%;
+            animation-delay: 2s;
+            animation-duration: 20s;
+            width: 20px;
+            height: 20px;
+        }
+
+        .bg-bubbles li:nth-child(10) {
+            left: 90%;
+            animation-delay: 4s;
+            width: 80px;
+            height: 80px;
+        }
+
+        @keyframes gradientBG {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        @keyframes square {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 1;
+                border-radius: 50%;
+            }
+            100% {
+                transform: translateY(-1000px) rotate(720deg);
+                opacity: 0;
+                border-radius: 50%;
+            }
+        }
+
+        /* Navigation */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: var(--shadow);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: var(--primary);
+        }
+
+        .logo i {
+            font-size: 2rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 500;
+            transition: var(--transition);
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            background-color: var(--primary);
+            color: var(--white);
+        }
+
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        /* Main Content */
+        .main-container {
+            margin-top: 80px;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .page {
+            width: 100%;
+            max-width: 1200px;
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border-radius: var(--card-border-radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #eee;
+        }
+
+        .page-title {
+            font-size: 1.8rem;
+            color: var(--primary);
+            font-weight: 700;
+        }
+
+        .page-subtitle {
+            color: #666;
+            margin-top: 0.5rem;
+        }
+
+        /* Resume Page */
+        .resume-container {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 2rem;
+        }
+
+        .resume-sidebar {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            height: fit-content;
+            position: sticky;
+            top: 100px;
+        }
+
+        .resume-stats {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .resume-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin: 0 auto 1rem;
+        }
+
+        .resume-name {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .resume-title {
+            color: var(--primary);
+            font-weight: 500;
+            margin-bottom: 1rem;
+        }
+
+        .resume-score {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .score-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .score-label {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .resume-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+            margin-bottom: 2rem;
+        }
+
+        .btn {
+            padding: 0.8rem 1rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            text-align: center;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-success {
+            background: var(--success);
+            color: white;
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid var(--primary);
+            color: var(--primary);
+        }
+
+        .btn-danger {
+            background: var(--danger);
+            color: white;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .resume-tips {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 1rem;
+        }
+
+        .tips-title {
+            font-weight: 600;
+            margin-bottom: 0.8rem;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .tips-list {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        .tips-list li {
+            padding: 0.5rem 0;
+            display: flex;
+            align-items: flex-start;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+            color: #555;
+        }
+
+        .tips-list li:before {
+            content: "💡";
+            font-size: 0.8rem;
+        }
+
+        .resume-content {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .resume-tabs {
+            display: flex;
+            border-bottom: 1px solid #eee;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .resume-tab {
+            padding: 0.8rem 1.5rem;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            transition: var(--transition);
+            font-weight: 500;
+        }
+
+        .resume-tab.active {
+            border-bottom-color: var(--primary);
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .resume-preview {
+            border: 1px solid #eee;
+            border-radius: 8px;
+            padding: 2rem;
+            background: #fafafa;
+            min-height: 800px;
+            position: relative;
+        }
+
+        .resume-header {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid var(--primary);
+        }
+
+        .resume-header h1 {
+            font-size: 2rem;
+            color: var(--dark);
+            margin-bottom: 0.5rem;
+        }
+
+        .resume-header h2 {
+            font-size: 1.2rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .contact-info {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .resume-section {
+            margin-bottom: 2rem;
+        }
+
+        .section-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid #eee;
+        }
+
+        .section-content {
+            line-height: 1.6;
+        }
+
+        .experience-item, .education-item {
+            margin-bottom: 1.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .experience-item:last-child, .education-item:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+
+        .item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 0.5rem;
+        }
+
+        .item-title {
+            font-weight: 600;
+            font-size: 1.1rem;
+            color: var(--dark);
+        }
+
+        .item-date {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .item-subtitle {
+            font-weight: 500;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .item-description {
+            color: #555;
+            line-height: 1.5;
+        }
+
+        .skills-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+        }
+
+        .skill-tag {
+            background: #e3f2fd;
+            color: var(--primary);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .resume-builder {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        .form-section {
+            margin-bottom: 2rem;
+        }
+
+        .form-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+
+        .form-control:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
+            outline: none;
+        }
+
+        textarea.form-control {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .add-item-btn {
+            background: #f8f9fa;
+            border: 2px dashed #ddd;
+            color: #666;
+            padding: 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: var(--transition);
+            text-align: center;
+            margin-top: 1rem;
+        }
+
+        .add-item-btn:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        .resume-item {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            position: relative;
+        }
+
+        .item-actions {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .item-action {
+            background: none;
+            border: none;
+            color: #666;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .item-action:hover {
+            color: var(--primary);
+        }
+
+        .analysis-results {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .analysis-card {
+            background: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+            text-align: center;
+        }
+
+        .analysis-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: #e3f2fd;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin: 0 auto 1rem;
+        }
+
+        .analysis-value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--primary);
+        }
+
+        .analysis-label {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .improvement-list {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        .improvement-list li {
+            padding: 0.8rem 0;
+            border-bottom: 1px solid #f0f0f0;
+            display: flex;
+            align-items: flex-start;
+            gap: 0.8rem;
+        }
+
+        .improvement-list li:last-child {
+            border-bottom: none;
+        }
+
+        .improvement-icon {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: #fff3e0;
+            color: var(--warning);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            flex-shrink: 0;
+        }
+
+        .improvement-content h4 {
+            margin-bottom: 0.3rem;
+            color: var(--dark);
+        }
+
+        .improvement-content p {
+            color: #666;
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+
+        .template-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .template-card {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: var(--transition);
+            cursor: pointer;
+        }
+
+        .template-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .template-preview {
+            height: 300px;
+            background: #f8f9fa;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .template-info {
+            padding: 1rem;
+        }
+
+        .template-name {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--dark);
+        }
+
+        .template-type {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        /* Upload Section */
+        .upload-section {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            border: 2px dashed #ddd;
+            text-align: center;
+        }
+
+        .upload-icon {
+            font-size: 3rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .upload-text {
+            margin-bottom: 1.5rem;
+            color: #666;
+        }
+
+        .file-input {
+            display: none;
+        }
+
+        .file-label {
+            display: inline-block;
+            padding: 0.8rem 1.5rem;
+            background: var(--primary);
+            color: white;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .file-label:hover {
+            background: var(--secondary);
+        }
+
+        .uploaded-files {
+            margin-top: 2rem;
+        }
+
+        .file-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            background: white;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .file-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .file-icon {
+            font-size: 1.5rem;
+            color: var(--primary);
+        }
+
+        .file-details h4 {
+            margin-bottom: 0.3rem;
+        }
+
+        .file-details p {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .file-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 600px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .modal-header {
+            padding: 1.5rem;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-header h3 {
+            margin: 0;
+        }
+
+        .close-modal {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        .modal-body {
+            padding: 1.5rem;
+        }
+
+        .export-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        .export-option {
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            padding: 1.5rem;
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .export-option:hover {
+            border-color: var(--primary);
+        }
+
+        .export-option.selected {
+            border-color: var(--primary);
+            background: #e3f2fd;
+        }
+
+        .export-icon {
+            font-size: 2rem;
+            margin-bottom: 0.8rem;
+            color: var(--primary);
+        }
+
+        .export-name {
+            font-weight: 600;
+            margin-bottom: 0.3rem;
+        }
+
+        .export-desc {
+            color: #666;
+            font-size: 0.8rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 1rem;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .main-container {
+                padding: 1rem;
+            }
+
+            .page {
+                padding: 1.5rem;
+            }
+
+            .resume-container {
+                grid-template-columns: 1fr;
+            }
+
+            .resume-sidebar {
+                position: static;
+            }
+
+            .resume-builder {
+                grid-template-columns: 1fr;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .resume-tabs {
+                flex-direction: column;
+            }
+
+            .analysis-results {
+                grid-template-columns: 1fr;
+            }
+
+            .template-gallery {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Animated background elements -->
+    <ul class="bg-bubbles">
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+    </ul>
+
+    <!-- Resume Page -->
+    <div id="resume-page">
+        <nav class="navbar">
+            <div class="logo">
+                <i class="fas fa-handshake"></i>
+                <span>HR Connect Pro</span>
+            </div>
+            <div class="nav-links">
+                <a href="JOB_QUESTION.html"><i class="fas fa-question-circle"></i> Dashboard</a>
+                <a href="JOB_Application.html"><i class="fas fa-tasks"></i> Applications</a>
+                <a href="JOBs_Section.html"><i class="fas fa-briefcase"></i> Job Search</a>
+                <a href="#" class="active"><i class="fas fa-file-alt"></i> My Resume</a>
+                
+            </div>
+            <div class="user-menu">
+                <div class="user-avatar">SJ</div>
+                <span>Sarah Johnson</span>
+                <a href="#"><i class="fas fa-sign-out-alt"></i></a>
+            </div>
+        </nav>
+
+        <div class="main-container">
+            <div class="page">
+                <div class="page-header">
+                    <div>
+                        <h1 class="page-title">My Resume</h1>
+                        <p class="page-subtitle">Create, manage, and optimize your professional resume</p>
+                    </div>
+                    <div class="btn btn-primary" onclick="openExportModal()">
+                        <i class="fas fa-download"></i> Export Resume
+                    </div>
+                </div>
+
+                <div class="resume-container">
+                    <!-- Resume Sidebar -->
+                    <div class="resume-sidebar">
+                        <div class="resume-stats">
+                            <div class="resume-avatar">SJ</div>
+                            <div class="resume-name">Sarah Johnson</div>
+                            <div class="resume-title">Senior Product Designer</div>
+                            <div class="resume-score">
+                                <div class="score-value">92%</div>
+                                <div class="score-label">Resume Score</div>
+                            </div>
+                        </div>
+
+                        <div class="resume-actions">
+                            <button class="btn btn-primary" onclick="showTab('builder')">
+                                <i class="fas fa-edit"></i> Edit Resume
+                            </button>
+                            <button class="btn btn-outline" onclick="showTab('preview')">
+                                <i class="fas fa-eye"></i> Preview
+                            </button>
+                            <button class="btn btn-outline" onclick="showTab('analysis')">
+                                <i class="fas fa-chart-line"></i> Resume Analysis
+                            </button>
+                            <button class="btn btn-outline" onclick="showTab('templates')">
+                                <i class="fas fa-palette"></i> Templates
+                            </button>
+                            <button class="btn btn-outline" onclick="showTab('upload')">
+                                <i class="fas fa-upload"></i> Upload Resume
+                            </button>
+                            <button class="btn btn-success">
+                                <i class="fas fa-sync-alt"></i> Update from Profile
+                            </button>
+                        </div>
+
+                        <div class="resume-tips">
+                            <div class="tips-title">
+                                <i class="fas fa-lightbulb"></i> Pro Tips
+                            </div>
+                            <ul class="tips-list">
+                                <li>Keep your resume to 1-2 pages maximum</li>
+                                <li>Use action verbs to describe accomplishments</li>
+                                <li>Quantify achievements with numbers and metrics</li>
+                                <li>Tailor your resume for each job application</li>
+                                <li>Include relevant keywords from job descriptions</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Resume Content -->
+                    <div class="resume-content">
+                        <div class="resume-tabs">
+                            <div class="resume-tab active" onclick="showTab('preview')">Preview</div>
+                            <div class="resume-tab" onclick="showTab('builder')">Builder</div>
+                            <div class="resume-tab" onclick="showTab('analysis')">Analysis</div>
+                            <div class="resume-tab" onclick="showTab('templates')">Templates</div>
+                            <div class="resume-tab" onclick="showTab('upload')">Upload</div>
+                        </div>
+
+                        <!-- Preview Tab -->
+                        <div id="preview-tab" class="tab-content active">
+                            <div class="resume-preview">
+                                <div class="resume-header">
+                                    <h1>Sarah Johnson</h1>
+                                    <h2>Senior Product Designer</h2>
+                                    <div class="contact-info">
+                                        <span><i class="fas fa-phone"></i> (555) 123-4567</span>
+                                        <span><i class="fas fa-envelope"></i> sarah.johnson@email.com</span>
+                                        <span><i class="fas fa-map-marker-alt"></i> San Francisco, CA</span>
+                                        <span><i class="fab fa-linkedin"></i> linkedin.com/in/sarahjohnson</span>
+                                    </div>
+                                </div>
+
+                                <div class="resume-section">
+                                    <div class="section-title">Professional Summary</div>
+                                    <div class="section-content">
+                                        <p>Experienced Senior Product Designer with 8+ years in creating user-centered digital products. 
+                                        Passionate about solving complex problems through intuitive design and data-driven decisions. 
+                                        Proven track record of improving user engagement and conversion rates across web and mobile platforms.</p>
+                                    </div>
+                                </div>
+
+                                <div class="resume-section">
+                                    <div class="section-title">Work Experience</div>
+                                    <div class="section-content">
+                                        <div class="experience-item">
+                                            <div class="item-header">
+                                                <div class="item-title">Senior Product Designer</div>
+                                                <div class="item-date">2020 - Present</div>
+                                            </div>
+                                            <div class="item-subtitle">TechVision Solutions, San Francisco, CA</div>
+                                            <div class="item-description">
+                                                <p>Lead designer for SaaS platform serving 50,000+ users. Increased user engagement by 45% through 
+                                                redesigned onboarding flow. Collaborated with engineering to implement design system used across 
+                                                15+ product teams.</p>
+                                            </div>
+                                        </div>
+
+                                        <div class="experience-item">
+                                            <div class="item-header">
+                                                <div class="item-title">Product Designer</div>
+                                                <div class="item-date">2017 - 2020</div>
+                                            </div>
+                                            <div class="item-subtitle">Innovate Labs, New York, NY</div>
+                                            <div class="item-description">
+                                                <p>Designed mobile applications for fintech startup, resulting in 30% increase in daily active users. 
+                                                Conducted user research and usability testing to inform product decisions. Created and maintained 
+                                                design system for iOS and Android applications.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="resume-section">
+                                    <div class="section-title">Education</div>
+                                    <div class="section-content">
+                                        <div class="education-item">
+                                            <div class="item-header">
+                                                <div class="item-title">Master of Fine Arts in Design</div>
+                                                <div class="item-date">2015 - 2017</div>
+                                            </div>
+                                            <div class="item-subtitle">Rhode Island School of Design</div>
+                                        </div>
+                                        <div class="education-item">
+                                            <div class="item-header">
+                                                <div class="item-title">Bachelor of Arts in Visual Arts</div>
+                                                <div class="item-date">2011 - 2015</div>
+                                            </div>
+                                            <div class="item-subtitle">University of California, Los Angeles</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="resume-section">
+                                    <div class="section-title">Skills</div>
+                                    <div class="section-content">
+                                        <div class="skills-list">
+                                            <span class="skill-tag">User Interface Design</span>
+                                            <span class="skill-tag">User Experience Research</span>
+                                            <span class="skill-tag">Figma</span>
+                                            <span class="skill-tag">Prototyping</span>
+                                            <span class="skill-tag">Design Systems</span>
+                                            <span class="skill-tag">HTML/CSS</span>
+                                            <span class="skill-tag">Usability Testing</span>
+                                            <span class="skill-tag">Agile Methodology</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Builder Tab -->
+                        <div id="builder-tab" class="tab-content">
+                            <div class="resume-builder">
+                                <div>
+                                    <div class="form-section">
+                                        <div class="form-title">
+                                            <i class="fas fa-user"></i> Personal Information
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Full Name</label>
+                                            <input type="text" class="form-control" value="Sarah Johnson">
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="form-group">
+                                                <label>Job Title</label>
+                                                <input type="text" class="form-control" value="Senior Product Designer">
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Phone</label>
+                                                <input type="text" class="form-control" value="(555) 123-4567">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Email</label>
+                                            <input type="email" class="form-control" value="sarah.johnson@email.com">
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Location</label>
+                                            <input type="text" class="form-control" value="San Francisco, CA">
+                                        </div>
+                                        <div class="form-group">
+                                            <label>LinkedIn URL</label>
+                                            <input type="text" class="form-control" value="linkedin.com/in/sarahjohnson">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-section">
+                                        <div class="form-title">
+                                            <i class="fas fa-graduation-cap"></i> Education
+                                        </div>
+                                        <div class="resume-item">
+                                            <div class="item-actions">
+                                                <button class="item-action"><i class="fas fa-edit"></i></button>
+                                                <button class="item-action"><i class="fas fa-trash"></i></button>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Degree</label>
+                                                <input type="text" class="form-control" value="Master of Fine Arts in Design">
+                                            </div>
+                                            <div class="form-group">
+                                                <label>School</label>
+                                                <input type="text" class="form-control" value="Rhode Island School of Design">
+                                            </div>
+                                            <div class="form-row">
+                                                <div class="form-group">
+                                                    <label>Start Date</label>
+                                                    <input type="text" class="form-control" value="2015">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label>End Date</label>
+                                                    <input type="text" class="form-control" value="2017">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="add-item-btn">
+                                            <i class="fas fa-plus"></i> Add Education
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <div class="form-section">
+                                        <div class="form-title">
+                                            <i class="fas fa-briefcase"></i> Work Experience
+                                        </div>
+                                        <div class="resume-item">
+                                            <div class="item-actions">
+                                                <button class="item-action"><i class="fas fa-edit"></i></button>
+                                                <button class="item-action"><i class="fas fa-trash"></i></button>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Job Title</label>
+                                                <input type="text" class="form-control" value="Senior Product Designer">
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Company</label>
+                                                <input type="text" class="form-control" value="TechVision Solutions">
+                                            </div>
+                                            <div class="form-row">
+                                                <div class="form-group">
+                                                    <label>Start Date</label>
+                                                    <input type="text" class="form-control" value="2020">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label>End Date</label>
+                                                    <input type="text" class="form-control" value="Present">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Description</label>
+                                                <textarea class="form-control">Lead designer for SaaS platform serving 50,000+ users. Increased user engagement by 45% through redesigned onboarding flow. Collaborated with engineering to implement design system used across 15+ product teams.</textarea>
+                                            </div>
+                                        </div>
+                                        <div class="add-item-btn">
+                                            <i class="fas fa-plus"></i> Add Experience
+                                        </div>
+                                    </div>
+
+                                    <div class="form-section">
+                                        <div class="form-title">
+                                            <i class="fas fa-star"></i> Skills
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Add Skills (comma separated)</label>
+                                            <input type="text" class="form-control" value="User Interface Design, User Experience Research, Figma, Prototyping, Design Systems, HTML/CSS, Usability Testing, Agile Methodology">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-section">
+                                        <div class="form-title">
+                                            <i class="fas fa-file-alt"></i> Summary
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Professional Summary</label>
+                                            <textarea class="form-control" rows="4">Experienced Senior Product Designer with 8+ years in creating user-centered digital products. Passionate about solving complex problems through intuitive design and data-driven decisions. Proven track record of improving user engagement and conversion rates across web and mobile platforms.</textarea>
+                                        </div>
+                                    </div>
+
+                                    <div class="btn btn-primary" style="width: 100%;" onclick="saveResume()">
+                                        <i class="fas fa-save"></i> Save Changes
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Analysis Tab -->
+                        <div id="analysis-tab" class="tab-content">
+                            <div class="analysis-results">
+                                <div class="analysis-card">
+                                    <div class="analysis-icon">
+                                        <i class="fas fa-chart-line"></i>
+                                    </div>
+                                    <div class="analysis-value">92%</div>
+                                    <div class="analysis-label">Overall Score</div>
+                                </div>
+                                <div class="analysis-card">
+                                    <div class="analysis-icon">
+                                        <i class="fas fa-eye"></i>
+                                    </div>
+                                    <div class="analysis-value">8.2s</div>
+                                    <div class="analysis-label">Avg. Read Time</div>
+                                </div>
+                                <div class="analysis-card">
+                                    <div class="analysis-icon">
+                                        <i class="fas fa-magic"></i>
+                                    </div>
+                                    <div class="analysis-value">15</div>
+                                    <div class="analysis-label">Action Verbs</div>
+                                </div>
+                                <div class="analysis-card">
+                                    <div class="analysis-icon">
+                                        <i class="fas fa-ruler"></i>
+                                    </div>
+                                    <div class="analysis-value">1.2</div>
+                                    <div class="analysis-label">Pages</div>
+                                </div>
+                            </div>
+
+                            <div class="form-section">
+                                <div class="form-title">
+                                    <i class="fas fa-lightbulb"></i> Improvement Suggestions
+                                </div>
+                                <ul class="improvement-list">
+                                    <li>
+                                        <div class="improvement-icon">
+                                            <i class="fas fa-bullseye"></i>
+                                        </div>
+                                        <div class="improvement-content">
+                                            <h4>Quantify Achievements</h4>
+                                            <p>Add more metrics and numbers to your experience section. Instead of "improved user engagement," try "increased user engagement by 45%."</p>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="improvement-icon">
+                                            <i class="fas fa-key"></i>
+                                        </div>
+                                        <div class="improvement-content">
+                                            <h4>Include Keywords</h4>
+                                            <p>Add industry-specific keywords like "user-centered design," "agile methodology," and "design systems" to improve ATS compatibility.</p>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="improvement-icon">
+                                            <i class="fas fa-sitemap"></i>
+                                        </div>
+                                        <div class="improvement-content">
+                                            <h4>Skills Organization</h4>
+                                            <p>Group your skills into categories like "Technical Skills," "Design Tools," and "Methodologies" for better readability.</p>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <div class="btn btn-primary">
+                                <i class="fas fa-sync-alt"></i> Re-analyze Resume
+                            </div>
+                        </div>
+
+                        <!-- Templates Tab -->
+                        <div id="templates-tab" class="tab-content">
+                            <div class="template-gallery">
+                                <div class="template-card" onclick="selectTemplate(1)">
+                                    <div class="template-preview">
+                                        Modern Professional Template
+                                    </div>
+                                    <div class="template-info">
+                                        <div class="template-name">Modern Professional</div>
+                                        <div class="template-type">Clean & Contemporary</div>
+                                        <button class="btn btn-outline" style="width: 100%;">
+                                            Use Template
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="template-card" onclick="selectTemplate(2)">
+                                    <div class="template-preview">
+                                        Creative Portfolio Template
+                                    </div>
+                                    <div class="template-info">
+                                        <div class="template-name">Creative Portfolio</div>
+                                        <div class="template-type">Design & Creative Fields</div>
+                                        <button class="btn btn-outline" style="width: 100%;">
+                                            Use Template
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="template-card" onclick="selectTemplate(3)">
+                                    <div class="template-preview">
+                                        Executive Template
+                                    </div>
+                                    <div class="template-info">
+                                        <div class="template-name">Executive</div>
+                                        <div class="template-type">Senior & Leadership Roles</div>
+                                        <button class="btn btn-outline" style="width: 100%;">
+                                            Use Template
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="template-card" onclick="selectTemplate(4)">
+                                    <div class="template-preview">
+                                        Minimalist Template
+                                    </div>
+                                    <div class="template-info">
+                                        <div class="template-name">Minimalist</div>
+                                        <div class="template-type">Simple & Elegant</div>
+                                        <button class="btn btn-outline" style="width: 100%;">
+                                            Use Template
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Upload Tab -->
+                        <div id="upload-tab" class="tab-content">
+                            <div class="upload-section">
+                                <div class="upload-icon">
+                                    <i class="fas fa-cloud-upload-alt"></i>
+                                </div>
+                                <h3>Upload Your Resume</h3>
+                                <p class="upload-text">Upload your existing resume to analyze, edit, or convert to a new template</p>
+                                <input type="file" id="resume-file" class="file-input" accept=".pdf,.doc,.docx,.txt">
+                                <label for="resume-file" class="file-label">
+                                    <i class="fas fa-file-upload"></i> Choose File
+                                </label>
+                                <p id="file-name" style="margin-top: 1rem; color: #666;"></p>
+                                <div class="btn btn-primary" style="margin-top: 1rem;" onclick="uploadResume()">
+                                    <i class="fas fa-upload"></i> Upload Resume
+                                </div>
+                            </div>
+
+                            <div class="uploaded-files">
+                                <h3>Your Uploaded Resumes</h3>
+                                <div class="file-item">
+                                    <div class="file-info">
+                                        <div class="file-icon">
+                                            <i class="fas fa-file-pdf"></i>
+                                        </div>
+                                        <div class="file-details">
+                                            <h4>Sarah_Johnson_Resume.pdf</h4>
+                                            <p>Uploaded: May 15, 2023</p>
+                                        </div>
+                                    </div>
+                                    <div class="file-actions">
+                                        <button class="btn btn-outline" onclick="analyzeUploadedResume()">
+                                            <i class="fas fa-chart-line"></i> Analyze
+                                        </button>
+                                        <button class="btn btn-outline" onclick="editUploadedResume()">
+                                            <i class="fas fa-edit"></i> Edit
+                                        </button>
+                                        <button class="btn btn-danger">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="file-item">
+                                    <div class="file-info">
+                                        <div class="file-icon">
+                                            <i class="fas fa-file-word"></i>
+                                        </div>
+                                        <div class="file-details">
+                                            <h4>Sarah_Johnson_CV.docx</h4>
+                                            <p>Uploaded: March 22, 2023</p>
+                                        </div>
+                                    </div>
+                                    <div class="file-actions">
+                                        <button class="btn btn-outline" onclick="analyzeUploadedResume()">
+                                            <i class="fas fa-chart-line"></i> Analyze
+                                        </button>
+                                        <button class="btn btn-outline" onclick="editUploadedResume()">
+                                            <i class="fas fa-edit"></i> Edit
+                                        </button>
+                                        <button class="btn btn-danger">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Export Modal -->
+    <div class="modal" id="exportModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Export Resume</h3>
+                <button class="close-modal" onclick="closeExportModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p>Choose your preferred format to download your resume:</p>
+                
+                <div class="export-options">
+                    <div class="export-option selected" onclick="selectExportOption('pdf')">
+                        <div class="export-icon">
+                            <i class="fas fa-file-pdf"></i>
+                        </div>
+                        <div class="export-name">PDF</div>
+                        <div class="export-desc">Best for printing and online applications</div>
+                    </div>
+                    <div class="export-option" onclick="selectExportOption('docx')">
+                        <div class="export-icon">
+                            <i class="fas fa-file-word"></i>
+                        </div>
+                        <div class="export-name">Word Document</div>
+                        <div class="export-desc">Editable format for customization</div>
+                    </div>
+                    <div class="export-option" onclick="selectExportOption('txt')">
+                        <div class="export-icon">
+                            <i class="fas fa-file-alt"></i>
+                        </div>
+                        <div class="export-name">Plain Text</div>
+                        <div class="export-desc">For online forms and ATS systems</div>
+                    </div>
+                </div>
+
+                <div class="btn btn-primary" style="width: 100%; margin-top: 1.5rem;" onclick="downloadResume()">
+                    <i class="fas fa-download"></i> Download Resume
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Resume data storage
+        let resumeData = {
+            personalInfo: {
+                name: "Sarah Johnson",
+                title: "Senior Product Designer",
+                phone: "(555) 123-4567",
+                email: "sarah.johnson@email.com",
+                location: "San Francisco, CA",
+                linkedin: "linkedin.com/in/sarahjohnson"
+            },
+            summary: "Experienced Senior Product Designer with 8+ years in creating user-centered digital products. Passionate about solving complex problems through intuitive design and data-driven decisions. Proven track record of improving user engagement and conversion rates across web and mobile platforms.",
+            experience: [
+                {
+                    title: "Senior Product Designer",
+                    company: "TechVision Solutions",
+                    location: "San Francisco, CA",
+                    startDate: "2020",
+                    endDate: "Present",
+                    description: "Lead designer for SaaS platform serving 50,000+ users. Increased user engagement by 45% through redesigned onboarding flow. Collaborated with engineering to implement design system used across 15+ product teams."
+                },
+                {
+                    title: "Product Designer",
+                    company: "Innovate Labs",
+                    location: "New York, NY",
+                    startDate: "2017",
+                    endDate: "2020",
+                    description: "Designed mobile applications for fintech startup, resulting in 30% increase in daily active users. Conducted user research and usability testing to inform product decisions. Created and maintained design system for iOS and Android applications."
+                }
+            ],
+            education: [
+                {
+                    degree: "Master of Fine Arts in Design",
+                    school: "Rhode Island School of Design",
+                    startDate: "2015",
+                    endDate: "2017"
+                },
+                {
+                    degree: "Bachelor of Arts in Visual Arts",
+                    school: "University of California, Los Angeles",
+                    startDate: "2011",
+                    endDate: "2015"
+                }
+            ],
+            skills: "User Interface Design, User Experience Research, Figma, Prototyping, Design Systems, HTML/CSS, Usability Testing, Agile Methodology"
+        };
+
+        // Tab navigation
+        function showTab(tabName) {
+            // Hide all tabs
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Remove active class from all tabs
+            document.querySelectorAll('.resume-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Show selected tab
+            document.getElementById(`${tabName}-tab`).classList.add('active');
+            
+            // Add active class to clicked tab
+            event.target.classList.add('active');
+        }
+
+        // Export modal functions
+        function openExportModal() {
+            document.getElementById('exportModal').classList.add('active');
+        }
+
+        function closeExportModal() {
+            document.getElementById('exportModal').classList.remove('active');
+        }
+
+        function selectExportOption(format) {
+            // Remove selected class from all options
+            document.querySelectorAll('.export-option').forEach(option => {
+                option.classList.remove('selected');
+            });
+            
+            // Add selected class to clicked option
+            event.currentTarget.classList.add('selected');
+        }
+
+        function downloadResume() {
+            const selectedOption = document.querySelector('.export-option.selected');
+            const format = selectedOption.querySelector('.export-name').textContent;
+            alert(`Downloading your resume as ${format}...`);
+            closeExportModal();
+            // In real application, this would trigger the download
+        }
+
+        // Template selection
+        function selectTemplate(templateId) {
+            alert(`Applying template ${templateId} to your resume...`);
+            // In real application, this would change the resume template
+        }
+
+        // Save resume data
+        function saveResume() {
+            // Get form values
+            const name = document.querySelector('input[value="Sarah Johnson"]').value;
+            const title = document.querySelector('input[value="Senior Product Designer"]').value;
+            const phone = document.querySelector('input[value="(555) 123-4567"]').value;
+            const email = document.querySelector('input[value="sarah.johnson@email.com"]').value;
+            const location = document.querySelector('input[value="San Francisco, CA"]').value;
+            const linkedin = document.querySelector('input[value="linkedin.com/in/sarahjohnson"]').value;
+            const summary = document.querySelector('textarea').value;
+            const skills = document.querySelector('input[value="User Interface Design, User Experience Research, Figma, Prototyping, Design Systems, HTML/CSS, Usability Testing, Agile Methodology"]').value;
+            
+            // Update resume data
+            resumeData.personalInfo.name = name;
+            resumeData.personalInfo.title = title;
+            resumeData.personalInfo.phone = phone;
+            resumeData.personalInfo.email = email;
+            resumeData.personalInfo.location = location;
+            resumeData.personalInfo.linkedin = linkedin;
+            resumeData.summary = summary;
+            resumeData.skills = skills;
+            
+            // Update preview
+            updatePreview();
+            
+            alert('Resume saved successfully!');
+        }
+
+        // Update preview with current data
+        function updatePreview() {
+            // Update personal info
+            document.querySelector('.resume-header h1').textContent = resumeData.personalInfo.name;
+            document.querySelector('.resume-header h2').textContent = resumeData.personalInfo.title;
+            document.querySelector('.resume-preview .contact-info').innerHTML = `
+                <span><i class="fas fa-phone"></i> ${resumeData.personalInfo.phone}</span>
+                <span><i class="fas fa-envelope"></i> ${resumeData.personalInfo.email}</span>
+                <span><i class="fas fa-map-marker-alt"></i> ${resumeData.personalInfo.location}</span>
+                <span><i class="fab fa-linkedin"></i> ${resumeData.personalInfo.linkedin}</span>
+            `;
+            
+            // Update summary
+            document.querySelector('.resume-preview .section-content p').textContent = resumeData.summary;
+            
+            // Update skills
+            const skillsList = document.querySelector('.skills-list');
+            skillsList.innerHTML = '';
+            resumeData.skills.split(', ').forEach(skill => {
+                skillsList.innerHTML += `<span class="skill-tag">${skill}</span>`;
+            });
+        }
+
+        // File upload functionality
+        document.getElementById('resume-file').addEventListener('change', function(e) {
+            const fileName = e.target.files[0] ? e.target.files[0].name : 'No file chosen';
+            document.getElementById('file-name').textContent = fileName;
+        });
+
+        function uploadResume() {
+            const fileInput = document.getElementById('resume-file');
+            if (!fileInput.files[0]) {
+                alert('Please select a file to upload.');
+                return;
+            }
+            
+            const file = fileInput.files[0];
+            const fileSize = (file.size / 1024 / 1024).toFixed(2); // Size in MB
+            
+            if (fileSize > 5) {
+                alert('File size exceeds 5MB limit. Please choose a smaller file.');
+                return;
+            }
+            
+            // In a real application, this would upload to a server
+            // For demo purposes, we'll simulate the upload
+            alert(`Uploading ${file.name}...`);
+            
+            // Add to uploaded files list
+            const uploadedFiles = document.querySelector('.uploaded-files');
+            const fileItem = document.createElement('div');
+            fileItem.className = 'file-item';
+            fileItem.innerHTML = `
+                <div class="file-info">
+                    <div class="file-icon">
+                        <i class="fas fa-file-pdf"></i>
+                    </div>
+                    <div class="file-details">
+                        <h4>${file.name}</h4>
+                        <p>Uploaded: ${new Date().toLocaleDateString()}</p>
+                    </div>
+                </div>
+                <div class="file-actions">
+                    <button class="btn btn-outline" onclick="analyzeUploadedResume()">
+                        <i class="fas fa-chart-line"></i> Analyze
+                    </button>
+                    <button class="btn btn-outline" onclick="editUploadedResume()">
+                        <i class="fas fa-edit"></i> Edit
+                    </button>
+                    <button class="btn btn-danger" onclick="this.parentElement.parentElement.remove()">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+            `;
+            
+            uploadedFiles.appendChild(fileItem);
+            
+            // Reset file input
+            fileInput.value = '';
+            document.getElementById('file-name').textContent = '';
+        }
+
+        function analyzeUploadedResume() {
+            alert('Analyzing uploaded resume...');
+            showTab('analysis');
+        }
+
+        function editUploadedResume() {
+            alert('Opening uploaded resume for editing...');
+            showTab('builder');
+        }
+
+        // Close modal when clicking outside
+        window.addEventListener('click', function(event) {
+            const modal = document.getElementById('exportModal');
+            if (event.target === modal) {
+                closeExportModal();
+            }
+        });
+
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add event listeners for form elements
+            document.querySelectorAll('.add-item-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const section = this.previousElementSibling.querySelector('.resume-item').cloneNode(true);
+                    this.parentNode.insertBefore(section, this);
+                });
+            });
+
+            // Add event listeners for delete buttons
+            document.addEventListener('click', function(e) {
+                if (e.target.closest('.fa-trash')) {
+                    const item = e.target.closest('.resume-item');
+                    if (item && item.parentNode.querySelectorAll('.resume-item').length > 1) {
+                        item.remove();
+                    } else {
+                        alert('You need at least one item in this section.');
+                    }
+                }
+            });
+        });
+
+        // Auto-save functionality
+        setInterval(() => {
+            console.log('Auto-saving resume...');
+            // In real application, this would save the resume data
+        }, 30000); // Auto-save every 30 seconds
+    </script>
+</body>
+</html>

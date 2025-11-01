@@ -1,0 +1,1516 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HR Connect Pro | Interview Scheduling</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #4361ee;
+            --primary-light: #4895ef;
+            --secondary: #3a0ca3;
+            --accent: #f72585;
+            --success: #4bb543;
+            --warning: #ffc107;
+            --danger: #dc3545;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --white: #ffffff;
+            --card-bg: rgba(255, 255, 255, 0.95);
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            --card-border-radius: 16px;
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            color: var(--dark);
+            background: linear-gradient(-45deg, #7209b7, #3a0ca3, #4361ee, #4cc9f0);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Animated background elements */
+        .bg-bubbles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .bg-bubbles li {
+            position: absolute;
+            list-style: none;
+            display: block;
+            width: 40px;
+            height: 40px;
+            background-color: rgba(255, 255, 255, 0.15);
+            bottom: -160px;
+            border-radius: 50%;
+            animation: square 25s infinite;
+            transition-timing-function: linear;
+        }
+
+        .bg-bubbles li:nth-child(1) {
+            left: 10%;
+            animation-delay: 0s;
+            width: 80px;
+            height: 80px;
+        }
+
+        .bg-bubbles li:nth-child(2) {
+            left: 20%;
+            animation-delay: 2s;
+            animation-duration: 17s;
+            width: 60px;
+            height: 60px;
+        }
+
+        .bg-bubbles li:nth-child(3) {
+            left: 25%;
+            animation-delay: 4s;
+            width: 120px;
+            height: 120px;
+        }
+
+        .bg-bubbles li:nth-child(4) {
+            left: 40%;
+            animation-delay: 0s;
+            animation-duration: 22s;
+            width: 160px;
+            height: 160px;
+        }
+
+        .bg-bubbles li:nth-child(5) {
+            left: 70%;
+            animation-delay: 3s;
+            width: 100px;
+            height: 100px;
+        }
+
+        .bg-bubbles li:nth-child(6) {
+            left: 80%;
+            animation-delay: 2s;
+            width: 120px;
+            height: 120px;
+        }
+
+        .bg-bubbles li:nth-child(7) {
+            left: 32%;
+            animation-delay: 6s;
+            width: 140px;
+            height: 140px;
+        }
+
+        .bg-bubbles li:nth-child(8) {
+            left: 55%;
+            animation-delay: 8s;
+            animation-duration: 18s;
+            width: 40px;
+            height: 40px;
+        }
+
+        .bg-bubbles li:nth-child(9) {
+            left: 25%;
+            animation-delay: 2s;
+            animation-duration: 20s;
+            width: 20px;
+            height: 20px;
+        }
+
+        .bg-bubbles li:nth-child(10) {
+            left: 90%;
+            animation-delay: 4s;
+            width: 80px;
+            height: 80px;
+        }
+
+        @keyframes gradientBG {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        @keyframes square {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 1;
+                border-radius: 50%;
+            }
+            100% {
+                transform: translateY(-1000px) rotate(720deg);
+                opacity: 0;
+                border-radius: 50%;
+            }
+        }
+
+        /* Navigation */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: var(--shadow);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: var(--primary);
+        }
+
+        .logo i {
+            font-size: 2rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 500;
+            transition: var(--transition);
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            background-color: var(--primary);
+            color: var(--white);
+        }
+
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        /* Main Content */
+        .main-container {
+            margin-top: 80px;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .page {
+            width: 100%;
+            max-width: 1200px;
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border-radius: var(--card-border-radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #eee;
+        }
+
+        .page-title {
+            font-size: 1.8rem;
+            color: var(--primary);
+            font-weight: 700;
+        }
+
+        .page-subtitle {
+            color: #666;
+            margin-top: 0.5rem;
+        }
+
+        /* Stats Cards */
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            transition: var(--transition);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .stat-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .stat-icon.scheduled {
+            background: rgba(67, 97, 238, 0.1);
+            color: var(--primary);
+        }
+
+        .stat-icon.completed {
+            background: rgba(75, 181, 67, 0.1);
+            color: var(--success);
+        }
+
+        .stat-icon.cancelled {
+            background: rgba(220, 53, 69, 0.1);
+            color: var(--danger);
+        }
+
+        .stat-icon.upcoming {
+            background: rgba(255, 193, 7, 0.1);
+            color: var(--warning);
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        /* Interview Scheduling */
+        .scheduling-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+
+        .schedule-form {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: var(--transition);
+        }
+
+        .schedule-form:hover {
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-title {
+            font-size: 1.3rem;
+            margin-bottom: 1.5rem;
+            color: var(--primary);
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+            position: relative;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--dark);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+
+        .form-control:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
+            outline: none;
+        }
+
+        .interview-list {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: var(--transition);
+        }
+
+        .interview-list:hover {
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .interview-filters {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-tab {
+            padding: 0.5rem 1rem;
+            background: #f8f9fa;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 500;
+        }
+
+        .filter-tab.active {
+            background: var(--primary);
+            color: white;
+        }
+
+        .interview-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            border-bottom: 1px solid #f0f0f0;
+            transition: var(--transition);
+            border-radius: 8px;
+        }
+
+        .interview-item:hover {
+            background: #f8f9fa;
+            transform: translateX(5px);
+        }
+
+        .interview-item:last-child {
+            border-bottom: none;
+        }
+
+        .interview-date {
+            background: var(--primary);
+            color: white;
+            padding: 0.8rem;
+            border-radius: 8px;
+            text-align: center;
+            min-width: 80px;
+        }
+
+        .interview-date .day {
+            font-size: 1.5rem;
+            font-weight: bold;
+            line-height: 1;
+        }
+
+        .interview-date .month {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+        }
+
+        .interview-details {
+            flex: 1;
+        }
+
+        .interview-details h4 {
+            margin-bottom: 0.3rem;
+        }
+
+        .interview-details p {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .interview-time {
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .interview-type {
+            display: inline-block;
+            padding: 0.2rem 0.6rem;
+            background: #e3f2fd;
+            color: var(--primary);
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .interview-status {
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .status-scheduled {
+            background: #e3f2fd;
+            color: var(--primary);
+        }
+
+        .status-completed {
+            background: #e8f5e9;
+            color: var(--success);
+        }
+
+        .status-cancelled {
+            background: #ffebee;
+            color: var(--danger);
+        }
+
+        .interview-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .btn {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-success {
+            background: var(--success);
+            color: white;
+        }
+
+        .btn-danger {
+            background: var(--danger);
+            color: white;
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid var(--primary);
+            color: var(--primary);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .calendar-section {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            margin-top: 2rem;
+            transition: var(--transition);
+        }
+
+        .calendar-section:hover {
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .calendar-nav {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .calendar-nav button {
+            background: #f8f9fa;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .calendar-nav button:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 0.5rem;
+        }
+
+        .calendar-day {
+            text-align: center;
+            padding: 0.5rem;
+            font-weight: 600;
+            color: #666;
+        }
+
+        .calendar-date {
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .calendar-date:hover {
+            background: #f0f0f0;
+        }
+
+        .calendar-date.today {
+            background: var(--primary);
+            color: white;
+        }
+
+        .calendar-date.has-interview {
+            background: #e8f5e9;
+            color: var(--success);
+            font-weight: 600;
+        }
+
+        .calendar-date.has-interview::after {
+            content: '';
+            position: absolute;
+            bottom: 5px;
+            width: 5px;
+            height: 5px;
+            background: var(--success);
+            border-radius: 50%;
+        }
+
+        /* Toast Notifications */
+        .toast-container {
+            position: fixed;
+            top: 100px;
+            right: 20px;
+            z-index: 3000;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .toast {
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            color: white;
+            font-weight: 500;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transform: translateX(400px);
+            transition: transform 0.3s ease;
+        }
+
+        .toast.show {
+            transform: translateX(0);
+        }
+
+        .toast-success {
+            background: var(--success);
+        }
+
+        .toast-error {
+            background: var(--danger);
+        }
+
+        .toast-info {
+            background: var(--primary);
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 500px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            animation: modalFadeIn 0.3s ease;
+        }
+
+        @keyframes modalFadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .modal-header {
+            padding: 1.5rem;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-header h3 {
+            margin: 0;
+        }
+
+        .close-modal {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        .modal-body {
+            padding: 1.5rem;
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 2rem;
+            color: #666;
+        }
+
+        .empty-state i {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: #ddd;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 1rem;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .main-container {
+                padding: 1rem;
+            }
+
+            .page {
+                padding: 1.5rem;
+            }
+
+            .scheduling-container {
+                grid-template-columns: 1fr;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .interview-filters {
+                flex-direction: column;
+            }
+
+            .interview-item {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .interview-actions {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .calendar-grid {
+                grid-template-columns: repeat(7, 1fr);
+                gap: 0.2rem;
+            }
+
+            .calendar-date {
+                height: 30px;
+                font-size: 0.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Animated background elements -->
+    <ul class="bg-bubbles">
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+    </ul>
+
+    <!-- Toast Notifications -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- Interview Scheduling Page -->
+    <div id="interview-scheduling">
+        <nav class="navbar">
+            <div class="logo">
+                <i class="fas fa-handshake"></i>
+                <span>HR Connect Pro</span>
+            </div>
+            <div class="nav-links">
+                <a href="HR_Dash.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+                <a href="HR_CAndidates.html"><i class="fas fa-users"></i> Candidates</a>
+                <a href="#" class="active"><i class="fas fa-calendar-alt"></i> Interviews</a>
+                <a href="HR_REPORT.html"><i class="fas fa-chart-bar"></i> Reports</a>
+                
+            </div>
+            <div class="user-menu">
+                <div class="user-avatar">JD</div>
+                <span>John Doe</span>
+                <a href="#"><i class="fas fa-sign-out-alt"></i></a>
+            </div>
+        </nav>
+
+        <div class="main-container">
+            <div class="page">
+                <div class="page-header">
+                    <div>
+                        <h1 class="page-title">Interview Scheduling</h1>
+                        <p class="page-subtitle">Schedule and manage candidate interviews</p>
+                    </div>
+                    <div class="btn btn-primary" onclick="openScheduleModal()">
+                        <i class="fas fa-plus"></i> Schedule New Interview
+                    </div>
+                </div>
+
+                <!-- Stats Cards -->
+                <div class="stats-container">
+                    <div class="stat-card">
+                        <div class="stat-icon scheduled">
+                            <i class="fas fa-calendar-check"></i>
+                        </div>
+                        <div class="stat-value" id="scheduledCount">0</div>
+                        <div class="stat-label">Scheduled</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon upcoming">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="stat-value" id="upcomingCount">0</div>
+                        <div class="stat-label">Upcoming</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon completed">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <div class="stat-value" id="completedCount">0</div>
+                        <div class="stat-label">Completed</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon cancelled">
+                            <i class="fas fa-times-circle"></i>
+                        </div>
+                        <div class="stat-value" id="cancelledCount">0</div>
+                        <div class="stat-label">Cancelled</div>
+                    </div>
+                </div>
+
+                <div class="scheduling-container">
+                    <div class="schedule-form">
+                        <h2 class="form-title"><i class="fas fa-calendar-plus"></i> Quick Schedule</h2>
+                        <form id="interviewForm">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="candidate"><i class="fas fa-user"></i> Candidate</label>
+                                    <select id="candidate" class="form-control" required>
+                                        <option value="">Select Candidate</option>
+                                        <option value="Sarah Johnson">Sarah Johnson - Project Manager</option>
+                                        <option value="Michael Chen">Michael Chen - Senior Developer</option>
+                                        <option value="Robert Parker">Robert Parker - UX Designer</option>
+                                        <option value="Amanda Davis">Amanda Davis - Data Analyst</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="interviewer"><i class="fas fa-user-tie"></i> Interviewer</label>
+                                    <select id="interviewer" class="form-control" required>
+                                        <option value="">Select Interviewer</option>
+                                        <option value="Jennifer Wilson">Jennifer Wilson - HR Manager</option>
+                                        <option value="David Brown">David Brown - Tech Lead</option>
+                                        <option value="Lisa Garcia">Lisa Garcia - Department Head</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="interviewDate"><i class="fas fa-calendar"></i> Date</label>
+                                    <input type="date" id="interviewDate" class="form-control" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="interviewTime"><i class="fas fa-clock"></i> Time</label>
+                                    <input type="time" id="interviewTime" class="form-control" required>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="interviewType"><i class="fas fa-video"></i> Interview Type</label>
+                                <select id="interviewType" class="form-control" required>
+                                    <option value="">Select Type</option>
+                                    <option value="Phone Screen">Phone Screen</option>
+                                    <option value="Technical Interview">Technical Interview</option>
+                                    <option value="Behavioral Interview">Behavioral Interview</option>
+                                    <option value="Final Round">Final Round</option>
+                                    <option value="On-site">On-site Interview</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="interviewLocation"><i class="fas fa-map-marker-alt"></i> Location/Platform</label>
+                                <input type="text" id="interviewLocation" class="form-control" placeholder="Conference Room A or Zoom/Teams" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="interviewNotes"><i class="fas fa-sticky-note"></i> Notes</label>
+                                <textarea id="interviewNotes" class="form-control" rows="3" placeholder="Additional notes for the interview..."></textarea>
+                            </div>
+                            
+                            <button type="submit" class="btn btn-primary" style="width: 100%; padding: 1rem;">
+                                <i class="fas fa-calendar-plus"></i> Schedule Interview
+                            </button>
+                        </form>
+                    </div>
+
+                    <div class="interview-list">
+                        <h2 class="form-title"><i class="fas fa-list"></i> Upcoming Interviews</h2>
+                        
+                        <div class="interview-filters">
+                            <div class="filter-tab active" onclick="filterInterviews('all')">All Interviews</div>
+                            <div class="filter-tab" onclick="filterInterviews('today')">Today</div>
+                            <div class="filter-tab" onclick="filterInterviews('week')">This Week</div>
+                            <div class="filter-tab" onclick="filterInterviews('scheduled')">Scheduled</div>
+                            <div class="filter-tab" onclick="filterInterviews('completed')">Completed</div>
+                        </div>
+                        
+                        <div id="interviewsContainer">
+                            <!-- Interview items will be dynamically inserted here -->
+                        </div>
+                    </div>
+                </div>
+
+                <div class="calendar-section">
+                    <div class="calendar-header">
+                        <h2 class="form-title"><i class="fas fa-calendar-alt"></i> Interview Calendar</h2>
+                        <div class="calendar-nav">
+                            <button id="prevMonth"><i class="fas fa-chevron-left"></i></button>
+                            <span id="currentMonth">May 2025</span>
+                            <button id="nextMonth"><i class="fas fa-chevron-right"></i></button>
+                        </div>
+                    </div>
+                    <div class="calendar-grid" id="calendarGrid">
+                        <!-- Calendar will be dynamically generated -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Interview Details Modal -->
+    <div class="modal" id="interviewModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalTitle">Interview Details</h3>
+                <button class="close-modal" onclick="closeModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div id="modalContent">
+                    <!-- Modal content will be dynamically inserted -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Sample interview data
+        let interviews = [
+            {
+                id: 1,
+                candidate: "Sarah Johnson",
+                position: "Project Manager",
+                interviewer: "Jennifer Wilson",
+                date: "2025-05-15",
+                time: "14:00",
+                type: "Technical Interview",
+                location: "Conference Room A",
+                status: "scheduled",
+                notes: "Focus on Agile methodology experience"
+            },
+            {
+                id: 2,
+                candidate: "Michael Chen",
+                position: "Senior Developer",
+                interviewer: "David Brown",
+                date: "2025-05-16",
+                time: "10:30",
+                type: "Technical Interview",
+                location: "Zoom Meeting",
+                status: "scheduled",
+                notes: "Coding assessment included"
+            },
+            {
+                id: 3,
+                candidate: "Robert Parker",
+                position: "UX Designer",
+                interviewer: "Lisa Garcia",
+                date: "2025-05-12",
+                time: "13:15",
+                type: "Behavioral Interview",
+                location: "Conference Room B",
+                status: "completed",
+                notes: "Portfolio review completed"
+            },
+            {
+                id: 4,
+                candidate: "Amanda Davis",
+                position: "Data Analyst",
+                interviewer: "Jennifer Wilson",
+                date: "2025-05-18",
+                time: "11:00",
+                type: "Final Round",
+                location: "Teams Meeting",
+                status: "scheduled",
+                notes: "Meet with entire analytics team"
+            }
+        ];
+
+        let currentFilter = 'all';
+        let currentMonth = new Date().getMonth();
+        let currentYear = new Date().getFullYear();
+
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', function() {
+            updateStats();
+            renderInterviews();
+            renderCalendar();
+            setupEventListeners();
+            
+            // Set minimum date to today for date input
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('interviewDate').min = today;
+        });
+
+        // Update statistics
+        function updateStats() {
+            const scheduled = interviews.filter(i => i.status === 'scheduled').length;
+            const completed = interviews.filter(i => i.status === 'completed').length;
+            const cancelled = interviews.filter(i => i.status === 'cancelled').length;
+            
+            // Calculate upcoming (scheduled and in the future)
+            const today = new Date();
+            const upcoming = interviews.filter(i => {
+                if (i.status !== 'scheduled') return false;
+                const interviewDate = new Date(i.date);
+                return interviewDate >= today;
+            }).length;
+            
+            document.getElementById('scheduledCount').textContent = scheduled;
+            document.getElementById('upcomingCount').textContent = upcoming;
+            document.getElementById('completedCount').textContent = completed;
+            document.getElementById('cancelledCount').textContent = cancelled;
+        }
+
+        // Render interviews based on current filter
+        function renderInterviews() {
+            const container = document.getElementById('interviewsContainer');
+            container.innerHTML = '';
+
+            const filteredInterviews = interviews.filter(interview => {
+                const interviewDate = new Date(interview.date);
+                const today = new Date();
+                const weekFromNow = new Date(today);
+                weekFromNow.setDate(today.getDate() + 7);
+
+                switch(currentFilter) {
+                    case 'today':
+                        return interviewDate.toDateString() === today.toDateString();
+                    case 'week':
+                        return interviewDate >= today && interviewDate <= weekFromNow;
+                    case 'scheduled':
+                        return interview.status === 'scheduled';
+                    case 'completed':
+                        return interview.status === 'completed';
+                    default:
+                        return true;
+                }
+            });
+
+            if (filteredInterviews.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-calendar-times"></i>
+                        <h3>No interviews found</h3>
+                        <p>Try changing your filters or schedule a new interview</p>
+                    </div>
+                `;
+                return;
+            }
+
+            filteredInterviews.forEach(interview => {
+                const interviewDate = new Date(interview.date);
+                const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+                
+                const interviewElement = document.createElement('div');
+                interviewElement.className = 'interview-item';
+                interviewElement.innerHTML = `
+                    <div class="interview-date">
+                        <div class="day">${interviewDate.getDate()}</div>
+                        <div class="month">${monthNames[interviewDate.getMonth()]}</div>
+                    </div>
+                    <div class="interview-details">
+                        <h4>${interview.candidate}</h4>
+                        <p>${interview.position}</p>
+                        <div class="interview-time">
+                            <i class="far fa-clock"></i> ${interview.time} • ${interview.type}
+                        </div>
+                        <p><span class="interview-type">${interview.location}</span> • With ${interview.interviewer}</p>
+                    </div>
+                    <div class="interview-status status-${interview.status}">
+                        ${interview.status.charAt(0).toUpperCase() + interview.status.slice(1)}
+                    </div>
+                    <div class="interview-actions">
+                        <button class="btn btn-outline" onclick="viewInterviewDetails(${interview.id})">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                        <button class="btn btn-success" onclick="markAsCompleted(${interview.id})" ${interview.status === 'completed' ? 'disabled' : ''}>
+                            <i class="fas fa-check"></i>
+                        </button>
+                        <button class="btn btn-danger" onclick="cancelInterview(${interview.id})" ${interview.status === 'cancelled' ? 'disabled' : ''}>
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                `;
+                container.appendChild(interviewElement);
+            });
+        }
+
+        // Filter interviews
+        function filterInterviews(filter) {
+            currentFilter = filter;
+            
+            // Update active tab
+            document.querySelectorAll('.filter-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            renderInterviews();
+        }
+
+        // Render calendar
+        function renderCalendar() {
+            const calendarGrid = document.getElementById('calendarGrid');
+            const monthYear = document.getElementById('currentMonth');
+            
+            // Set month/year header
+            const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+            monthYear.textContent = `${monthNames[currentMonth]} ${currentYear}`;
+            
+            // Clear calendar
+            calendarGrid.innerHTML = '';
+            
+            // Add day headers
+            const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+            days.forEach(day => {
+                const dayElement = document.createElement('div');
+                dayElement.className = 'calendar-day';
+                dayElement.textContent = day;
+                calendarGrid.appendChild(dayElement);
+            });
+            
+            // Get first day of month and number of days
+            const firstDay = new Date(currentYear, currentMonth, 1).getDay();
+            const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+            const today = new Date();
+            
+            // Add empty cells for days before first day of month
+            for (let i = 0; i < firstDay; i++) {
+                const emptyCell = document.createElement('div');
+                emptyCell.className = 'calendar-date';
+                calendarGrid.appendChild(emptyCell);
+            }
+            
+            // Add days of month
+            for (let day = 1; day <= daysInMonth; day++) {
+                const dateCell = document.createElement('div');
+                dateCell.className = 'calendar-date';
+                dateCell.textContent = day;
+                
+                // Check if today
+                if (currentYear === today.getFullYear() && currentMonth === today.getMonth() && day === today.getDate()) {
+                    dateCell.classList.add('today');
+                }
+                
+                // Check if has interviews
+                const hasInterview = interviews.some(interview => {
+                    const interviewDate = new Date(interview.date);
+                    return interviewDate.getFullYear() === currentYear && 
+                           interviewDate.getMonth() === currentMonth && 
+                           interviewDate.getDate() === day;
+                });
+                
+                if (hasInterview) {
+                    dateCell.classList.add('has-interview');
+                    dateCell.onclick = () => {
+                        const interviewDate = new Date(currentYear, currentMonth, day);
+                        showInterviewsForDate(interviewDate);
+                    };
+                }
+                
+                calendarGrid.appendChild(dateCell);
+            }
+        }
+
+        // Show interviews for a specific date
+        function showInterviewsForDate(date) {
+            const dateString = date.toISOString().split('T')[0];
+            const dayInterviews = interviews.filter(interview => interview.date === dateString);
+            
+            if (dayInterviews.length === 0) {
+                showToast(`No interviews scheduled for ${date.toDateString()}`, 'info');
+                return;
+            }
+            
+            let modalContent = `<h4>Interviews on ${date.toDateString()}</h4>`;
+            dayInterviews.forEach(interview => {
+                modalContent += `
+                    <div class="interview-item" style="margin-bottom: 1rem;">
+                        <div class="interview-details">
+                            <h4>${interview.candidate}</h4>
+                            <p>${interview.position} • ${interview.time}</p>
+                            <p><span class="interview-type">${interview.type}</span> • <span class="interview-status status-${interview.status}">${interview.status}</span></p>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            document.getElementById('modalTitle').textContent = 'Interviews on ' + date.toDateString();
+            document.getElementById('modalContent').innerHTML = modalContent;
+            document.getElementById('interviewModal').classList.add('active');
+        }
+
+        // View interview details
+        function viewInterviewDetails(interviewId) {
+            const interview = interviews.find(i => i.id === interviewId);
+            if (!interview) return;
+            
+            const interviewDate = new Date(interview.date);
+            const modalContent = `
+                <div class="form-group">
+                    <label>Candidate:</label>
+                    <p><strong>${interview.candidate}</strong> - ${interview.position}</p>
+                </div>
+                <div class="form-group">
+                    <label>Interviewer:</label>
+                    <p>${interview.interviewer}</p>
+                </div>
+                <div class="form-group">
+                    <label>Date & Time:</label>
+                    <p>${interviewDate.toDateString()} at ${interview.time}</p>
+                </div>
+                <div class="form-group">
+                    <label>Type:</label>
+                    <p>${interview.type}</p>
+                </div>
+                <div class="form-group">
+                    <label>Location/Platform:</label>
+                    <p>${interview.location}</p>
+                </div>
+                <div class="form-group">
+                    <label>Status:</label>
+                    <p><span class="interview-status status-${interview.status}">${interview.status.charAt(0).toUpperCase() + interview.status.slice(1)}</span></p>
+                </div>
+                <div class="form-group">
+                    <label>Notes:</label>
+                    <p>${interview.notes || 'No additional notes'}</p>
+                </div>
+                <div class="interview-actions" style="margin-top: 1.5rem;">
+                    <button class="btn btn-primary" onclick="rescheduleInterview(${interviewId})">
+                        <i class="fas fa-edit"></i> Reschedule
+                    </button>
+                    <button class="btn btn-outline" onclick="closeModal()">
+                        <i class="fas fa-times"></i> Close
+                    </button>
+                </div>
+            `;
+            
+            document.getElementById('modalTitle').textContent = 'Interview Details';
+            document.getElementById('modalContent').innerHTML = modalContent;
+            document.getElementById('interviewModal').classList.add('active');
+        }
+
+        // Mark interview as completed
+        function markAsCompleted(interviewId) {
+            if (confirm('Mark this interview as completed?')) {
+                const interview = interviews.find(i => i.id === interviewId);
+                if (interview) {
+                    interview.status = 'completed';
+                    updateStats();
+                    renderInterviews();
+                    renderCalendar();
+                    showToast('Interview marked as completed!', 'success');
+                }
+            }
+        }
+
+        // Cancel interview
+        function cancelInterview(interviewId) {
+            if (confirm('Are you sure you want to cancel this interview?')) {
+                const interview = interviews.find(i => i.id === interviewId);
+                if (interview) {
+                    interview.status = 'cancelled';
+                    updateStats();
+                    renderInterviews();
+                    renderCalendar();
+                    showToast('Interview has been cancelled!', 'error');
+                }
+            }
+        }
+
+        // Reschedule interview
+        function rescheduleInterview(interviewId) {
+            const interview = interviews.find(i => i.id === interviewId);
+            if (!interview) return;
+            
+            const newDate = prompt('Enter new date (YYYY-MM-DD):', interview.date);
+            const newTime = prompt('Enter new time (HH:MM):', interview.time);
+            
+            if (newDate && newTime) {
+                interview.date = newDate;
+                interview.time = newTime;
+                renderInterviews();
+                renderCalendar();
+                closeModal();
+                showToast('Interview has been rescheduled!', 'success');
+            }
+        }
+
+        // Show toast notification
+        function showToast(message, type = 'info') {
+            const toastContainer = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = `toast toast-${type}`;
+            
+            let icon = 'fas fa-info-circle';
+            if (type === 'success') icon = 'fas fa-check-circle';
+            if (type === 'error') icon = 'fas fa-exclamation-circle';
+            
+            toast.innerHTML = `
+                <i class="${icon}"></i>
+                <span>${message}</span>
+            `;
+            
+            toastContainer.appendChild(toast);
+            
+            // Show toast
+            setTimeout(() => {
+                toast.classList.add('show');
+            }, 100);
+            
+            // Hide and remove toast after 3 seconds
+            setTimeout(() => {
+                toast.classList.remove('show');
+                setTimeout(() => {
+                    toastContainer.removeChild(toast);
+                }, 300);
+            }, 3000);
+        }
+
+        // Setup event listeners
+        function setupEventListeners() {
+            // Interview form submission
+            document.getElementById('interviewForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const candidate = document.getElementById('candidate').value;
+                const interviewer = document.getElementById('interviewer').value;
+                const date = document.getElementById('interviewDate').value;
+                const time = document.getElementById('interviewTime').value;
+                const type = document.getElementById('interviewType').value;
+                const location = document.getElementById('interviewLocation').value;
+                const notes = document.getElementById('interviewNotes').value;
+                
+                if (!candidate || !interviewer || !date || !time || !type || !location) {
+                    showToast('Please fill in all required fields', 'error');
+                    return;
+                }
+                
+                // Create new interview
+                const newInterview = {
+                    id: interviews.length > 0 ? Math.max(...interviews.map(i => i.id)) + 1 : 1,
+                    candidate: candidate,
+                    position: candidate.split(' - ')[1],
+                    interviewer: interviewer,
+                    date: date,
+                    time: time,
+                    type: type,
+                    location: location,
+                    status: 'scheduled',
+                    notes: notes
+                };
+                
+                interviews.push(newInterview);
+                updateStats();
+                renderInterviews();
+                renderCalendar();
+                
+                // Reset form
+                this.reset();
+                
+                showToast('Interview scheduled successfully!', 'success');
+            });
+            
+            // Calendar navigation
+            document.getElementById('prevMonth').addEventListener('click', function() {
+                currentMonth--;
+                if (currentMonth < 0) {
+                    currentMonth = 11;
+                    currentYear--;
+                }
+                renderCalendar();
+            });
+            
+            document.getElementById('nextMonth').addEventListener('click', function() {
+                currentMonth++;
+                if (currentMonth > 11) {
+                    currentMonth = 0;
+                    currentYear++;
+                }
+                renderCalendar();
+            });
+        }
+
+        // Open schedule modal
+        function openScheduleModal() {
+            // In a real application, this would open a modal for scheduling
+            // For this demo, we'll just scroll to the form
+            document.querySelector('.schedule-form').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Close modal
+        function closeModal() {
+            document.getElementById('interviewModal').classList.remove('active');
+        }
+
+        // Close modal when clicking outside
+        window.addEventListener('click', function(event) {
+            const modal = document.getElementById('interviewModal');
+            if (event.target === modal) {
+                closeModal();
+            }
+        });
+    </script>
+</body>
+</html>

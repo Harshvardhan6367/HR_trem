@@ -1,0 +1,1387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HR Connect Pro | Reports & Analytics</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --primary: #4361ee;
+            --primary-light: #4895ef;
+            --secondary: #3a0ca3;
+            --accent: #f72585;
+            --success: #4bb543;
+            --warning: #ffc107;
+            --danger: #dc3545;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --white: #ffffff;
+            --card-bg: rgba(255, 255, 255, 0.95);
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            --card-border-radius: 16px;
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            color: var(--dark);
+            background: linear-gradient(-45deg, #7209b7, #3a0ca3, #4361ee, #4cc9f0);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Animated background elements */
+        .bg-bubbles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .bg-bubbles li {
+            position: absolute;
+            list-style: none;
+            display: block;
+            width: 40px;
+            height: 40px;
+            background-color: rgba(255, 255, 255, 0.15);
+            bottom: -160px;
+            border-radius: 50%;
+            animation: square 25s infinite;
+            transition-timing-function: linear;
+        }
+
+        .bg-bubbles li:nth-child(1) {
+            left: 10%;
+            animation-delay: 0s;
+            width: 80px;
+            height: 80px;
+        }
+
+        .bg-bubbles li:nth-child(2) {
+            left: 20%;
+            animation-delay: 2s;
+            animation-duration: 17s;
+            width: 60px;
+            height: 60px;
+        }
+
+        .bg-bubbles li:nth-child(3) {
+            left: 25%;
+            animation-delay: 4s;
+            width: 120px;
+            height: 120px;
+        }
+
+        .bg-bubbles li:nth-child(4) {
+            left: 40%;
+            animation-delay: 0s;
+            animation-duration: 22s;
+            width: 160px;
+            height: 160px;
+        }
+
+        .bg-bubbles li:nth-child(5) {
+            left: 70%;
+            animation-delay: 3s;
+            width: 100px;
+            height: 100px;
+        }
+
+        .bg-bubbles li:nth-child(6) {
+            left: 80%;
+            animation-delay: 2s;
+            width: 120px;
+            height: 120px;
+        }
+
+        .bg-bubbles li:nth-child(7) {
+            left: 32%;
+            animation-delay: 6s;
+            width: 140px;
+            height: 140px;
+        }
+
+        .bg-bubbles li:nth-child(8) {
+            left: 55%;
+            animation-delay: 8s;
+            animation-duration: 18s;
+            width: 40px;
+            height: 40px;
+        }
+
+        .bg-bubbles li:nth-child(9) {
+            left: 25%;
+            animation-delay: 2s;
+            animation-duration: 20s;
+            width: 20px;
+            height: 20px;
+        }
+
+        .bg-bubbles li:nth-child(10) {
+            left: 90%;
+            animation-delay: 4s;
+            width: 80px;
+            height: 80px;
+        }
+
+        @keyframes gradientBG {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        @keyframes square {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 1;
+                border-radius: 50%;
+            }
+            100% {
+                transform: translateY(-1000px) rotate(720deg);
+                opacity: 0;
+                border-radius: 50%;
+            }
+        }
+
+        /* Navigation */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: var(--shadow);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: var(--primary);
+        }
+
+        .logo i {
+            font-size: 2rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 500;
+            transition: var(--transition);
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            background-color: var(--primary);
+            color: var(--white);
+        }
+
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        /* Main Content */
+        .main-container {
+            margin-top: 80px;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .page {
+            width: 100%;
+            max-width: 1200px;
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border-radius: var(--card-border-radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #eee;
+        }
+
+        .page-title {
+            font-size: 1.8rem;
+            color: var(--primary);
+            font-weight: 700;
+        }
+
+        .page-subtitle {
+            color: #666;
+            margin-top: 0.5rem;
+        }
+
+        /* Reports & Analytics */
+        .reports-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .date-filter {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .filter-select {
+            padding: 0.7rem 1rem;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background: white;
+            min-width: 150px;
+            font-size: 0.9rem;
+            transition: var(--transition);
+        }
+
+        .filter-select:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
+            outline: none;
+        }
+
+        .report-actions {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .btn {
+            padding: 0.7rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-success {
+            background: var(--success);
+            color: white;
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid var(--primary);
+            color: var(--primary);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .kpi-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .kpi-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            text-align: center;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .kpi-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .kpi-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: var(--primary);
+        }
+
+        .kpi-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .kpi-label {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .kpi-trend {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.3rem;
+            margin-top: 0.5rem;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .trend-up {
+            color: var(--success);
+        }
+
+        .trend-down {
+            color: var(--danger);
+        }
+
+        .charts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .chart-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: var(--transition);
+        }
+
+        .chart-card:hover {
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .chart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .chart-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .chart-container {
+            position: relative;
+            height: 300px;
+            width: 100%;
+        }
+
+        .reports-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .report-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: var(--transition);
+        }
+
+        .report-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .report-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            background: var(--primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .report-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--dark);
+        }
+
+        .report-description {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+            line-height: 1.5;
+        }
+
+        .report-stats {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 1rem;
+        }
+
+        .report-size {
+            color: #666;
+            font-size: 0.8rem;
+        }
+
+        .insights-section {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            margin-top: 2rem;
+            transition: var(--transition);
+        }
+
+        .insights-section:hover {
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .insights-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .insights-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .insights-list {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .insight-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            padding: 1rem;
+            background: #f8f9fa;
+            border-radius: 8px;
+            transition: var(--transition);
+        }
+
+        .insight-item:hover {
+            background: #e9ecef;
+            transform: translateX(5px);
+        }
+
+        .insight-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #e3f2fd;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .insight-content h4 {
+            margin-bottom: 0.3rem;
+            color: var(--dark);
+        }
+
+        .insight-content p {
+            color: #666;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        /* Toast Notifications */
+        .toast-container {
+            position: fixed;
+            top: 100px;
+            right: 20px;
+            z-index: 3000;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .toast {
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            color: white;
+            font-weight: 500;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transform: translateX(400px);
+            transition: transform 0.3s ease;
+        }
+
+        .toast.show {
+            transform: translateX(0);
+        }
+
+        .toast-success {
+            background: var(--success);
+        }
+
+        .toast-error {
+            background: var(--danger);
+        }
+
+        .toast-info {
+            background: var(--primary);
+        }
+
+        /* Loading Spinner */
+        .spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 1rem;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .main-container {
+                padding: 1rem;
+            }
+
+            .page {
+                padding: 1.5rem;
+            }
+
+            .reports-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .date-filter {
+                width: 100%;
+                justify-content: space-between;
+            }
+
+            .charts-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .chart-container {
+                height: 250px;
+            }
+
+            .reports-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .kpi-cards {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .kpi-cards {
+                grid-template-columns: 1fr;
+            }
+
+            .date-filter {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Animated background elements -->
+    <ul class="bg-bubbles">
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+    </ul>
+
+    <!-- Toast Notifications -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- Reports & Analytics Page -->
+    <div id="reports-analytics">
+        <nav class="navbar">
+            <div class="logo">
+                <i class="fas fa-handshake"></i>
+                <span>HR Connect Pro</span>
+            </div>
+            <div class="nav-links">
+                <a href="HR_Dash.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+                <a href="HR_CAndidates.html"><i class="fas fa-users"></i> Candidates</a>
+                <a href="HR_INTERVIEW.html"><i class="fas fa-calendar-alt"></i> Interviews</a>
+                <a href="#" class="active"><i class="fas fa-chart-bar"></i> Reports</a>
+                
+            </div>
+            <div class="user-menu">
+                <div class="user-avatar">JD</div>
+                <span>John Doe</span>
+                <a href="#"><i class="fas fa-sign-out-alt"></i></a>
+            </div>
+        </nav>
+
+        <div class="main-container">
+            <div class="page">
+                <div class="page-header">
+                    <div>
+                        <h1 class="page-title">Reports & Analytics</h1>
+                        <p class="page-subtitle">Data-driven insights for better hiring decisions</p>
+                    </div>
+                </div>
+
+                <div class="reports-header">
+                    <div class="date-filter">
+                        <select class="filter-select" id="timeRange">
+                            <option value="7">Last 7 Days</option>
+                            <option value="30" selected>Last 30 Days</option>
+                            <option value="90">Last 90 Days</option>
+                            <option value="365">Last 12 Months</option>
+                            <option value="custom">Custom Range</option>
+                        </select>
+                        <select class="filter-select" id="department">
+                            <option value="all">All Departments</option>
+                            <option value="engineering">Engineering</option>
+                            <option value="marketing">Marketing</option>
+                            <option value="sales">Sales</option>
+                            <option value="hr">Human Resources</option>
+                        </select>
+                    </div>
+                    <div class="report-actions">
+                        <button class="btn btn-outline" id="exportBtn">
+                            <i class="fas fa-file-export"></i> Export Data
+                        </button>
+                        <button class="btn btn-primary" id="refreshBtn">
+                            <i class="fas fa-sync-alt"></i> Refresh Data
+                        </button>
+                    </div>
+                </div>
+
+                <!-- KPI Cards -->
+                <div class="kpi-cards">
+                    <div class="kpi-card">
+                        <div class="kpi-value" id="totalCandidates">142</div>
+                        <div class="kpi-label">Total Candidates</div>
+                        <div class="kpi-trend trend-up">
+                            <i class="fas fa-arrow-up"></i> 12% from last month
+                        </div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-value" id="interviewsConducted">24</div>
+                        <div class="kpi-label">Interviews Conducted</div>
+                        <div class="kpi-trend trend-up">
+                            <i class="fas fa-arrow-up"></i> 8% from last month
+                        </div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-value" id="offersExtended">18</div>
+                        <div class="kpi-label">Offers Extended</div>
+                        <div class="kpi-trend trend-down">
+                            <i class="fas fa-arrow-down"></i> 5% from last month
+                        </div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-value" id="daysToFill">42</div>
+                        <div class="kpi-label">Days to Fill</div>
+                        <div class="kpi-trend trend-down">
+                            <i class="fas fa-arrow-down"></i> 3 days improvement
+                        </div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-value" id="costPerHire">$4,250</div>
+                        <div class="kpi-label">Cost per Hire</div>
+                        <div class="kpi-trend trend-up">
+                            <i class="fas fa-arrow-up"></i> $350 increase
+                        </div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-value" id="candidateSatisfaction">78%</div>
+                        <div class="kpi-label">Candidate Satisfaction</div>
+                        <div class="kpi-trend trend-up">
+                            <i class="fas fa-arrow-up"></i> 5% improvement
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Charts Section -->
+                <div class="charts-grid">
+                    <div class="chart-card">
+                        <div class="chart-header">
+                            <h3 class="chart-title">Applications by Position</h3>
+                            <select class="filter-select" id="applicationsFilter">
+                                <option>Last 30 Days</option>
+                                <option>Last 90 Days</option>
+                                <option>Year to Date</option>
+                            </select>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="applicationsChart"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="chart-card">
+                        <div class="chart-header">
+                            <h3 class="chart-title">Candidate Pipeline</h3>
+                            <select class="filter-select" id="pipelineFilter">
+                                <option>Last 30 Days</option>
+                                <option>Last 90 Days</option>
+                                <option>Year to Date</option>
+                            </select>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="pipelineChart"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="chart-card">
+                        <div class="chart-header">
+                            <h3 class="chart-title">Source Effectiveness</h3>
+                            <select class="filter-select" id="sourceFilter">
+                                <option>Last 30 Days</option>
+                                <option>Last 90 Days</option>
+                                <option>Year to Date</option>
+                            </select>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="sourceChart"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="chart-card">
+                        <div class="chart-header">
+                            <h3 class="chart-title">Time to Fill Trends</h3>
+                            <select class="filter-select" id="timeToFillFilter">
+                                <option>Last 6 Months</option>
+                                <option>Last 12 Months</option>
+                                <option>Last 24 Months</option>
+                            </select>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="timeToFillChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pre-built Reports -->
+                <h2 style="margin: 2rem 0 1rem 0; color: var(--primary);">Pre-built Reports</h2>
+                <div class="reports-grid">
+                    <div class="report-card">
+                        <div class="report-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <h3 class="report-title">Recruitment Performance</h3>
+                        <p class="report-description">Comprehensive overview of recruitment metrics including time-to-fill, cost-per-hire, and quality of hire.</p>
+                        <div class="report-stats">
+                            <button class="btn btn-outline" data-report="recruitment">
+                                <i class="fas fa-eye"></i> View Report
+                            </button>
+                            <span class="report-size">PDF • 2.4 MB</span>
+                        </div>
+                    </div>
+
+                    <div class="report-card">
+                        <div class="report-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <h3 class="report-title">Candidate Diversity</h3>
+                        <p class="report-description">Analysis of candidate demographics and diversity metrics across all hiring stages.</p>
+                        <div class="report-stats">
+                            <button class="btn btn-outline" data-report="diversity">
+                                <i class="fas fa-eye"></i> View Report
+                            </button>
+                            <span class="report-size">PDF • 1.8 MB</span>
+                        </div>
+                    </div>
+
+                    <div class="report-card">
+                        <div class="report-icon">
+                            <i class="fas fa-dollar-sign"></i>
+                        </div>
+                        <h3 class="report-title">Recruitment Budget</h3>
+                        <p class="report-description">Detailed breakdown of recruitment spending and budget utilization across departments.</p>
+                        <div class="report-stats">
+                            <button class="btn btn-outline" data-report="budget">
+                                <i class="fas fa-eye"></i> View Report
+                            </button>
+                            <span class="report-size">PDF • 3.1 MB</span>
+                        </div>
+                    </div>
+
+                    <div class="report-card">
+                        <div class="report-icon">
+                            <i class="fas fa-graduation-cap"></i>
+                        </div>
+                        <h3 class="report-title">University Recruitment</h3>
+                        <p class="report-description">Performance analysis of campus recruitment programs and graduate hiring initiatives.</p>
+                        <div class="report-stats">
+                            <button class="btn btn-outline" data-report="university">
+                                <i class="fas fa-eye"></i> View Report
+                            </button>
+                            <span class="report-size">PDF • 2.7 MB</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- AI Insights -->
+                <div class="insights-section">
+                    <div class="insights-header">
+                        <h2 class="insights-title">AI-Powered Insights</h2>
+                        <button class="btn btn-primary" id="generateInsightsBtn">
+                            <i class="fas fa-robot"></i> Generate New Insights
+                        </button>
+                    </div>
+                    <div class="insights-list" id="insightsList">
+                        <div class="insight-item">
+                            <div class="insight-icon">
+                                <i class="fas fa-lightbulb"></i>
+                            </div>
+                            <div class="insight-content">
+                                <h4>High-Performing Source</h4>
+                                <p>LinkedIn is generating 45% more qualified candidates compared to other job boards. Consider reallocating budget to maximize ROI.</p>
+                            </div>
+                        </div>
+                        <div class="insight-item">
+                            <div class="insight-icon">
+                                <i class="fas fa-exclamation-triangle"></i>
+                            </div>
+                            <div class="insight-content">
+                                <h4>Bottleneck Alert</h4>
+                                <p>Technical interviews are taking 7 days longer than average. Consider adding more interviewers to reduce wait times.</p>
+                            </div>
+                        </div>
+                        <div class="insight-item">
+                            <div class="insight-icon">
+                                <i class="fas fa-trophy"></i>
+                            </div>
+                            <div class="insight-content">
+                                <h4>Top Performer</h4>
+                                <p>Candidate satisfaction scores are 22% higher for interviews conducted by Jennifer Wilson. Consider her for key positions.</p>
+                            </div>
+                        </div>
+                        <div class="insight-item">
+                            <div class="insight-icon">
+                                <i class="fas fa-chart-pie"></i>
+                            </div>
+                            <div class="insight-content">
+                                <h4>Seasonal Trend</h4>
+                                <p>Application rates typically increase by 18% in Q4. Plan additional recruitment resources for the upcoming quarter.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Chart instances
+        let applicationsChart, pipelineChart, sourceChart, timeToFillChart;
+
+        // Initialize charts when the page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeCharts();
+            setupEventListeners();
+        });
+
+        function initializeCharts() {
+            // Applications by Position Chart
+            const applicationsCtx = document.getElementById('applicationsChart').getContext('2d');
+            applicationsChart = new Chart(applicationsCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['Software Engineer', 'Product Manager', 'UX Designer', 'Data Analyst', 'Marketing Specialist', 'Sales Executive'],
+                    datasets: [{
+                        label: 'Applications',
+                        data: [45, 28, 22, 35, 19, 31],
+                        backgroundColor: [
+                            '#4361ee', '#3a0ca3', '#f72585', '#4cc9f0', '#7209b7', '#4bb543'
+                        ],
+                        borderWidth: 0,
+                        borderRadius: 5
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                            titleFont: {
+                                size: 14
+                            },
+                            bodyFont: {
+                                size: 13
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: {
+                                drawBorder: false
+                            },
+                            ticks: {
+                                font: {
+                                    size: 11
+                                }
+                            }
+                        },
+                        x: {
+                            grid: {
+                                display: false
+                            },
+                            ticks: {
+                                font: {
+                                    size: 11
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Candidate Pipeline Chart
+            const pipelineCtx = document.getElementById('pipelineChart').getContext('2d');
+            pipelineChart = new Chart(pipelineCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Applied', 'Screening', 'Interview', 'Offer', 'Hired'],
+                    datasets: [{
+                        data: [142, 89, 45, 18, 12],
+                        backgroundColor: [
+                            '#4361ee', '#3a0ca3', '#f72585', '#4cc9f0', '#4bb543'
+                        ],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    cutout: '70%',
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                padding: 20,
+                                usePointStyle: true,
+                                font: {
+                                    size: 11
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Source Effectiveness Chart
+            const sourceCtx = document.getElementById('sourceChart').getContext('2d');
+            sourceChart = new Chart(sourceCtx, {
+                type: 'polarArea',
+                data: {
+                    labels: ['LinkedIn', 'Company Website', 'Employee Referral', 'Job Boards', 'Campus Recruitment'],
+                    datasets: [{
+                        data: [35, 22, 18, 15, 10],
+                        backgroundColor: [
+                            '#4361ee', '#3a0ca3', '#f72585', '#4cc9f0', '#7209b7'
+                        ],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                padding: 20,
+                                usePointStyle: true,
+                                font: {
+                                    size: 11
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Time to Fill Trends Chart
+            const timeToFillCtx = document.getElementById('timeToFillChart').getContext('2d');
+            timeToFillChart = new Chart(timeToFillCtx, {
+                type: 'line',
+                data: {
+                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+                    datasets: [{
+                        label: 'Engineering',
+                        data: [45, 42, 48, 40, 38, 35, 42, 39, 36, 38, 35, 32],
+                        borderColor: '#4361ee',
+                        backgroundColor: 'rgba(67, 97, 238, 0.1)',
+                        tension: 0.4,
+                        fill: true,
+                        borderWidth: 2
+                    }, {
+                        label: 'Marketing',
+                        data: [38, 35, 40, 36, 32, 30, 35, 33, 30, 32, 28, 26],
+                        borderColor: '#f72585',
+                        backgroundColor: 'rgba(247, 37, 133, 0.1)',
+                        tension: 0.4,
+                        fill: true,
+                        borderWidth: 2
+                    }, {
+                        label: 'Sales',
+                        data: [32, 30, 35, 28, 26, 24, 30, 28, 25, 27, 24, 22],
+                        borderColor: '#4bb543',
+                        backgroundColor: 'rgba(75, 181, 67, 0.1)',
+                        tension: 0.4,
+                        fill: true,
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                padding: 20,
+                                usePointStyle: true,
+                                font: {
+                                    size: 11
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Days to Fill',
+                                font: {
+                                    size: 12
+                                }
+                            },
+                            ticks: {
+                                font: {
+                                    size: 11
+                                }
+                            }
+                        },
+                        x: {
+                            ticks: {
+                                font: {
+                                    size: 11
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function setupEventListeners() {
+            // Time range filter
+            document.getElementById('timeRange').addEventListener('change', function() {
+                if (this.value === 'custom') {
+                    const startDate = prompt('Enter start date (YYYY-MM-DD):');
+                    const endDate = prompt('Enter end date (YYYY-MM-DD):');
+                    if (startDate && endDate) {
+                        showToast(`Loading data from ${startDate} to ${endDate}`, 'info');
+                        refreshData();
+                    }
+                } else {
+                    showToast(`Loading data for last ${this.value} days`, 'info');
+                    refreshData();
+                }
+            });
+
+            // Department filter
+            document.getElementById('department').addEventListener('change', function() {
+                showToast(`Filtering data for ${this.value} department`, 'info');
+                refreshData();
+            });
+
+            // Export data button
+            document.getElementById('exportBtn').addEventListener('click', function() {
+                const btn = this;
+                const originalText = btn.innerHTML;
+                
+                btn.innerHTML = '<div class="spinner"></div> Exporting...';
+                btn.disabled = true;
+                
+                setTimeout(() => {
+                    btn.innerHTML = originalText;
+                    btn.disabled = false;
+                    showToast('Report data exported successfully!', 'success');
+                }, 2000);
+            });
+
+            // Refresh data button
+            document.getElementById('refreshBtn').addEventListener('click', function() {
+                const btn = this;
+                const originalText = btn.innerHTML;
+                
+                btn.innerHTML = '<div class="spinner"></div> Refreshing...';
+                btn.disabled = true;
+                
+                refreshData();
+                
+                setTimeout(() => {
+                    btn.innerHTML = originalText;
+                    btn.disabled = false;
+                }, 1500);
+            });
+
+            // View report buttons
+            document.querySelectorAll('.report-card .btn-outline').forEach(button => {
+                button.addEventListener('click', function() {
+                    const reportType = this.getAttribute('data-report');
+                    const reportTitle = this.closest('.report-card').querySelector('.report-title').textContent;
+                    
+                    showToast(`Generating ${reportTitle} report...`, 'info');
+                    
+                    // Simulate report generation
+                    setTimeout(() => {
+                        showToast(`${reportTitle} report is ready!`, 'success');
+                    }, 2000);
+                });
+            });
+
+            // Generate insights button
+            document.getElementById('generateInsightsBtn').addEventListener('click', function() {
+                const btn = this;
+                const originalText = btn.innerHTML;
+                
+                btn.innerHTML = '<div class="spinner"></div> Generating...';
+                btn.disabled = true;
+                
+                generateNewInsights();
+                
+                setTimeout(() => {
+                    btn.innerHTML = originalText;
+                    btn.disabled = false;
+                }, 3000);
+            });
+
+            // Chart filters
+            document.getElementById('applicationsFilter').addEventListener('change', function() {
+                showToast(`Updating applications chart for ${this.value}`, 'info');
+            });
+
+            document.getElementById('pipelineFilter').addEventListener('change', function() {
+                showToast(`Updating pipeline chart for ${this.value}`, 'info');
+            });
+
+            document.getElementById('sourceFilter').addEventListener('change', function() {
+                showToast(`Updating source chart for ${this.value}`, 'info');
+            });
+
+            document.getElementById('timeToFillFilter').addEventListener('change', function() {
+                showToast(`Updating time to fill chart for ${this.value}`, 'info');
+            });
+        }
+
+        // Show toast notification
+        function showToast(message, type = 'info') {
+            const toastContainer = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = `toast toast-${type}`;
+            
+            let icon = 'fas fa-info-circle';
+            if (type === 'success') icon = 'fas fa-check-circle';
+            if (type === 'error') icon = 'fas fa-exclamation-circle';
+            
+            toast.innerHTML = `
+                <i class="${icon}"></i>
+                <span>${message}</span>
+            `;
+            
+            toastContainer.appendChild(toast);
+            
+            // Show toast
+            setTimeout(() => {
+                toast.classList.add('show');
+            }, 100);
+            
+            // Hide and remove toast after 3 seconds
+            setTimeout(() => {
+                toast.classList.remove('show');
+                setTimeout(() => {
+                    toastContainer.removeChild(toast);
+                }, 300);
+            }, 3000);
+        }
+
+        // Simulate data refresh
+        function refreshData() {
+            // Show loading state
+            document.querySelectorAll('.kpi-value').forEach(el => {
+                el.textContent = '...';
+            });
+            
+            // Simulate API call delay
+            setTimeout(() => {
+                // Update with new data (in real app, this would come from API)
+                document.getElementById('totalCandidates').textContent = '142';
+                document.getElementById('interviewsConducted').textContent = '24';
+                document.getElementById('offersExtended').textContent = '18';
+                document.getElementById('daysToFill').textContent = '42';
+                document.getElementById('costPerHire').textContent = '$4,250';
+                document.getElementById('candidateSatisfaction').textContent = '78%';
+                
+                showToast('Data refreshed successfully!', 'success');
+            }, 1500);
+        }
+
+        // Generate new AI insights
+        function generateNewInsights() {
+            const insightsList = document.getElementById('insightsList');
+            insightsList.innerHTML = '';
+            
+            const newInsights = [
+                {
+                    icon: 'fas fa-bullseye',
+                    title: 'Optimization Opportunity',
+                    content: 'Interview-to-offer conversion rate could be improved by 15% with better candidate screening criteria.'
+                },
+                {
+                    icon: 'fas fa-users',
+                    title: 'Team Performance',
+                    content: 'Hiring managers who provide feedback within 24 hours have 30% higher candidate acceptance rates.'
+                },
+                {
+                    icon: 'fas fa-map-marker-alt',
+                    title: 'Geographic Trends',
+                    content: 'Remote candidates from the Midwest region show 22% higher retention rates than other regions.'
+                },
+                {
+                    icon: 'fas fa-clock',
+                    title: 'Efficiency Gain',
+                    content: 'Automating initial screening responses could save approximately 12 hours per week in administrative tasks.'
+                }
+            ];
+            
+            newInsights.forEach(insight => {
+                const insightElement = document.createElement('div');
+                insightElement.className = 'insight-item';
+                insightElement.innerHTML = `
+                    <div class="insight-icon">
+                        <i class="${insight.icon}"></i>
+                    </div>
+                    <div class="insight-content">
+                        <h4>${insight.title}</h4>
+                        <p>${insight.content}</p>
+                    </div>
+                `;
+                insightsList.appendChild(insightElement);
+            });
+            
+            showToast('New AI-powered insights generated!', 'success');
+        }
+    </script>
+</body>
+</html>

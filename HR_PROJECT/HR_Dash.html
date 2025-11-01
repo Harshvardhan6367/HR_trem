@@ -1,0 +1,1567 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HR Connect Pro | Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #4361ee;
+            --secondary: #3a0ca3;
+            --accent: #f72585;
+            --success: #4bb543;
+            --warning: #ffc107;
+            --danger: #dc3545;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --white: #ffffff;
+            --card-bg: rgba(255, 255, 255, 0.95);
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            --card-border-radius: 20px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            color: var(--dark);
+            background: linear-gradient(-45deg, #7209b7, #3a0ca3, #4361ee, #4cc9f0);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        .bg-bubbles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .bg-bubbles li {
+            position: absolute;
+            list-style: none;
+            display: block;
+            width: 40px;
+            height: 40px;
+            background-color: rgba(255, 255, 255, 0.15);
+            bottom: -160px;
+            border-radius: 50%;
+            animation: square 25s infinite;
+            transition-timing-function: linear;
+        }
+
+        .bg-bubbles li:nth-child(1) { left: 10%; animation-delay: 0s; width: 80px; height: 80px; }
+        .bg-bubbles li:nth-child(2) { left: 20%; animation-delay: 2s; animation-duration: 17s; width: 60px; height: 60px; }
+        .bg-bubbles li:nth-child(3) { left: 25%; animation-delay: 4s; width: 120px; height: 120px; }
+        .bg-bubbles li:nth-child(4) { left: 40%; animation-delay: 0s; animation-duration: 22s; width: 160px; height: 160px; }
+        .bg-bubbles li:nth-child(5) { left: 70%; animation-delay: 3s; width: 100px; height: 100px; }
+        .bg-bubbles li:nth-child(6) { left: 80%; animation-delay: 2s; width: 120px; height: 120px; }
+        .bg-bubbles li:nth-child(7) { left: 32%; animation-delay: 6s; width: 140px; height: 140px; }
+        .bg-bubbles li:nth-child(8) { left: 55%; animation-delay: 8s; animation-duration: 18s; width: 40px; height: 40px; }
+        .bg-bubbles li:nth-child(9) { left: 25%; animation-delay: 2s; animation-duration: 20s; width: 20px; height: 20px; }
+        .bg-bubbles li:nth-child(10) { left: 90%; animation-delay: 4s; width: 80px; height: 80px; }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        @keyframes square {
+            0% { transform: translateY(0) rotate(0deg); opacity: 1; border-radius: 50%; }
+            100% { transform: translateY(-1000px) rotate(720deg); opacity: 0; border-radius: 50%; }
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            box-shadow: var(--shadow);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            transition: var(--transition);
+        }
+
+        .navbar.scrolled {
+            padding: 0.7rem 2rem;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: var(--primary);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .logo:hover {
+            transform: scale(1.05);
+        }
+
+        .logo i {
+            font-size: 2rem;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 500;
+            transition: var(--transition);
+            padding: 0.7rem 1.2rem;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .nav-links a:hover {
+            background-color: rgba(67, 97, 238, 0.1);
+            color: var(--primary);
+            transform: translateY(-2px);
+        }
+
+        .nav-links a.active {
+            background-color: var(--primary);
+            color: var(--white);
+            box-shadow: 0 5px 15px rgba(67, 97, 238, 0.3);
+        }
+
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            position: relative;
+        }
+
+        .notification-bell {
+            position: relative;
+            cursor: pointer;
+            font-size: 1.3rem;
+            color: var(--dark);
+            transition: var(--transition);
+        }
+
+        .notification-bell:hover {
+            color: var(--primary);
+            transform: scale(1.1);
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: var(--danger);
+            color: white;
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            font-weight: bold;
+        }
+
+        .user-avatar {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .user-avatar:hover {
+            transform: scale(1.1);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .user-name {
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .logout-btn {
+            background: linear-gradient(135deg, var(--danger), #c82333);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .logout-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(220, 53, 69, 0.3);
+        }
+
+        .main-container {
+            margin-top: 90px;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            animation: slideIn 0.5s ease-out;
+        }
+
+        .page {
+            width: 100%;
+            max-width: 1400px;
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            border-radius: var(--card-border-radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 2px solid #eee;
+        }
+
+        .page-title {
+            font-size: 2rem;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 700;
+        }
+
+        .page-subtitle {
+            color: #666;
+            margin-top: 0.5rem;
+            font-size: 1rem;
+        }
+
+        .stats-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            transition: var(--transition);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            transform: scaleX(0);
+            transition: var(--transition);
+        }
+
+        .stat-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+        }
+
+        .stat-icon {
+            width: 70px;
+            height: 70px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            color: white;
+            transition: var(--transition);
+        }
+
+        .stat-card:hover .stat-icon {
+            transform: rotate(360deg) scale(1.1);
+        }
+
+        .stat-icon.primary { background: linear-gradient(135deg, #4361ee, #3a0ca3); }
+        .stat-icon.success { background: linear-gradient(135deg, #4bb543, #2d7a28); }
+        .stat-icon.warning { background: linear-gradient(135deg, #ffc107, #ff9800); }
+        .stat-icon.danger { background: linear-gradient(135deg, #dc3545, #c82333); }
+
+        .stat-info {
+            flex: 1;
+        }
+
+        .stat-info h3 {
+            font-size: 2rem;
+            margin-bottom: 0.3rem;
+            font-weight: 700;
+        }
+
+        .stat-info p {
+            color: #666;
+            font-size: 0.95rem;
+        }
+
+        .stat-trend {
+            font-size: 0.85rem;
+            margin-top: 0.3rem;
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        .stat-trend.up {
+            color: var(--success);
+        }
+
+        .stat-trend.down {
+            color: var(--danger);
+        }
+
+        .dashboard-content {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2rem;
+        }
+
+        .dashboard-section {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+            transition: var(--transition);
+        }
+
+        .dashboard-section:hover {
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+        }
+
+        .section-title {
+            font-size: 1.3rem;
+            margin-bottom: 1.5rem;
+            color: var(--primary);
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .activity-list {
+            margin-top: 1rem;
+        }
+
+        .activity-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1.2rem;
+            border-bottom: 1px solid #f0f0f0;
+            transition: var(--transition);
+            border-radius: 8px;
+        }
+
+        .activity-item:hover {
+            background: #f8f9fa;
+            transform: translateX(5px);
+        }
+
+        .activity-item:last-child {
+            border-bottom: none;
+        }
+
+        .activity-icon {
+            width: 45px;
+            height: 45px;
+            border-radius: 12px;
+            background: #f0f0f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            font-size: 1.1rem;
+            transition: var(--transition);
+        }
+
+        .activity-item:hover .activity-icon {
+            transform: scale(1.1);
+        }
+
+        .activity-content {
+            flex: 1;
+        }
+
+        .activity-content p {
+            margin-bottom: 0.3rem;
+            font-weight: 500;
+        }
+
+        .activity-time {
+            color: #999;
+            font-size: 0.85rem;
+        }
+
+        .candidates-list {
+            margin-top: 1rem;
+        }
+
+        .candidate-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1.2rem;
+            border-bottom: 1px solid #f0f0f0;
+            transition: var(--transition);
+            border-radius: 8px;
+        }
+
+        .candidate-item:hover {
+            background: #f8f9fa;
+            transform: translateX(5px);
+        }
+
+        .candidate-item:last-child {
+            border-bottom: none;
+        }
+
+        .candidate-avatar {
+            width: 55px;
+            height: 55px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+            transition: var(--transition);
+        }
+
+        .candidate-item:hover .candidate-avatar {
+            transform: scale(1.1);
+        }
+
+        .candidate-info {
+            flex: 1;
+        }
+
+        .candidate-info h4 {
+            margin-bottom: 0.3rem;
+            font-weight: 600;
+        }
+
+        .candidate-info p {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .candidate-status {
+            padding: 0.4rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+
+        .status-new { background: #e3f2fd; color: var(--primary); }
+        .status-review { background: #fff3e0; color: var(--warning); }
+        .status-approved { background: #e8f5e9; color: var(--success); }
+        .status-rejected { background: #ffebee; color: var(--danger); }
+
+        .btn {
+            padding: 0.7rem 1.5rem;
+            border: none;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.95rem;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            box-shadow: 0 5px 15px rgba(67, 97, 238, 0.3);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, var(--success), #2d7a28);
+            color: white;
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, var(--danger), #c82333);
+            color: white;
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn:active {
+            transform: translateY(-1px);
+        }
+
+        .quick-actions {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .action-card {
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            border-radius: 12px;
+            padding: 1.8rem;
+            text-align: center;
+            transition: var(--transition);
+            cursor: pointer;
+            border: 2px solid transparent;
+        }
+
+        .action-card:hover {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 15px 30px rgba(67, 97, 238, 0.3);
+            border-color: white;
+        }
+
+        .action-card:hover .action-icon {
+            color: white;
+            transform: scale(1.2) rotate(10deg);
+        }
+
+        .action-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
+            transition: var(--transition);
+        }
+
+        .action-card h4 {
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .action-card p {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        .search-filter {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .search-box {
+            flex: 1;
+            min-width: 250px;
+            position: relative;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 0.8rem 1rem 0.8rem 3rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            font-size: 0.95rem;
+            transition: var(--transition);
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.1);
+        }
+
+        .search-box i {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #999;
+        }
+
+        .filter-btn {
+            padding: 0.8rem 1.5rem;
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .filter-btn:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(5px);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 20px;
+            padding: 2.5rem;
+            max-width: 500px;
+            width: 90%;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            animation: slideUp 0.3s ease;
+            position: relative;
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #eee;
+        }
+
+        .modal-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #999;
+            transition: var(--transition);
+            width: 35px;
+            height: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+        }
+
+        .close-btn:hover {
+            background: #f0f0f0;
+            color: var(--danger);
+            transform: rotate(90deg);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            font-size: 0.95rem;
+            transition: var(--transition);
+            font-family: inherit;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.1);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: white;
+            padding: 1rem 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            transform: translateX(400px);
+            transition: var(--transition);
+            z-index: 3000;
+        }
+
+        .toast.active {
+            transform: translateX(0);
+        }
+
+        .toast.success {
+            border-left: 4px solid var(--success);
+        }
+
+        .toast.error {
+            border-left: 4px solid var(--danger);
+        }
+
+        .toast.info {
+            border-left: 4px solid var(--primary);
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e0e0e0;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-top: 0.5rem;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            border-radius: 10px;
+            transition: width 0.5s ease;
+        }
+
+        @media (max-width: 1024px) {
+            .dashboard-content {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 1rem;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .main-container {
+                padding: 1rem;
+                margin-top: 80px;
+            }
+
+            .page {
+                padding: 1.5rem;
+            }
+
+            .stats-cards {
+                grid-template-columns: 1fr;
+            }
+
+            .quick-actions {
+                grid-template-columns: 1fr;
+            }
+
+            .search-filter {
+                flex-direction: column;
+            }
+
+            .page-header {
+                flex-direction: column;
+                gap: 1rem;
+                align-items: flex-start;
+            }
+            
+            .user-menu {
+                gap: 0.5rem;
+            }
+            
+            .user-name {
+                display: none;
+            }
+            
+            .logout-btn span {
+                display: none;
+            }
+            
+            .logout-btn {
+                padding: 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <ul class="bg-bubbles">
+        <li></li><li></li><li></li><li></li><li></li>
+        <li></li><li></li><li></li><li></li><li></li>
+    </ul>
+
+    <nav class="navbar" id="navbar">
+        <div class="logo">
+            <i class="fas fa-handshake"></i>
+            <span>HR Connect Pro</span>
+        </div>
+        <div class="nav-links">
+            <a href="#" class="active" onclick="showSection('dashboard')"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+            <a href="HR_CAndidates.html" onclick="showSection('candidates')"><i class="fas fa-users"></i> Candidates</a>
+            <a href="HR_INTERVIEW.html" onclick="showSection('interviews')"><i class="fas fa-calendar-alt"></i> Interviews</a>
+            <a href="HR_REPORT.html" onclick="showSection('reports')"><i class="fas fa-chart-bar"></i> Reports</a>
+        </div>
+        <div class="user-menu">
+            <div class="notification-bell" onclick="toggleNotifications()">
+                <i class="fas fa-bell"></i>
+                <span class="notification-badge">3</span>
+            </div>
+            <div class="user-avatar" onclick="toggleUserMenu()">JD</div>
+            <span class="user-name">John Doe</span>
+            <button class="logout-btn" onclick="logout()">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>Logout</span>
+            </button>
+        </div>
+    </nav>
+
+    <div class="main-container">
+        <div class="page">
+            <div class="page-header">
+                <div>
+                    <h1 class="page-title">HR Dashboard</h1>
+                    <p class="page-subtitle">Welcome back, John! Here's what's happening today.</p>
+                </div>
+                <button class="btn btn-primary" onclick="openModal('jobModal')">
+                    <i class="fas fa-plus"></i> New Job Posting
+                </button>
+            </div>
+
+            <div class="stats-cards">
+                <div class="stat-card" onclick="showSection('candidates')">
+                    <div class="stat-icon primary">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="totalCandidates">142</h3>
+                        <p>Total Candidates</p>
+                        <div class="stat-trend up">
+                            <i class="fas fa-arrow-up"></i> 12% this month
+                        </div>
+                    </div>
+                </div>
+                <div class="stat-card" onclick="showSection('interviews')">
+                    <div class="stat-icon success">
+                        <i class="fas fa-calendar-check"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="scheduledInterviews">24</h3>
+                        <p>Interviews Scheduled</p>
+                        <div class="stat-trend up">
+                            <i class="fas fa-arrow-up"></i> 8 this week
+                        </div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon warning">
+                        <i class="fas fa-file-alt"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="pendingReviews">58</h3>
+                        <p>Pending Reviews</p>
+                        <div class="stat-trend down">
+                            <i class="fas fa-arrow-down"></i> 5% from last week
+                        </div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon danger">
+                        <i class="fas fa-briefcase"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="openPositions">12</h3>
+                        <p>Open Positions</p>
+                        <div class="stat-trend up">
+                            <i class="fas fa-arrow-up"></i> 3 new
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="search-filter">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="searchInput" placeholder="Search candidates, positions, interviews..." onkeyup="searchContent()">
+                </div>
+                <button class="filter-btn" onclick="toggleFilters()">
+                    <i class="fas fa-filter"></i> Filters
+                </button>
+            </div>
+
+            <div class="dashboard-content">
+                <div class="dashboard-section">
+                    <h2 class="section-title">
+                        <i class="fas fa-clock"></i> Recent Activities
+                    </h2>
+                    <div class="activity-list" id="activityList">
+                        <div class="activity-item">
+                            <div class="activity-icon">
+                                <i class="fas fa-user-plus"></i>
+                            </div>
+                            <div class="activity-content">
+                                <p>New candidate application received for Senior Developer position</p>
+                                <div class="activity-time">10 minutes ago</div>
+                            </div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-icon">
+                                <i class="fas fa-calendar-alt"></i>
+                            </div>
+                            <div class="activity-content">
+                                <p>Interview scheduled with Sarah Johnson for Project Manager role</p>
+                                <div class="activity-time">2 hours ago</div>
+                            </div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-icon">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                            <div class="activity-content">
+                                <p>Michael Chen approved for next round of technical interviews</p>
+                                <div class="activity-time">Yesterday, 3:45 PM</div>
+                            </div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-icon">
+                                <i class="fas fa-file-download"></i>
+                            </div>
+                            <div class="activity-content">
+                                <p>Monthly recruitment report generated and sent to management</p>
+                                <div class="activity-time">Yesterday, 10:30 AM</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h2 class="section-title" style="margin-top: 2rem;">
+                        <i class="fas fa-stream"></i> Candidate Pipeline
+                    </h2>
+                    <div class="candidates-list" id="candidatesList"></div>
+                </div>
+
+                <div class="dashboard-section">
+                    <h2 class="section-title">
+                        <i class="fas fa-bolt"></i> Quick Actions
+                    </h2>
+                    <div class="quick-actions">
+                        <div class="action-card" onclick="openModal('candidateModal')">
+                            <div class="action-icon">
+                                <i class="fas fa-user-plus"></i>
+                            </div>
+                            <h4>Add Candidate</h4>
+                            <p>Manually add a new candidate to the system</p>
+                        </div>
+                        <div class="action-card" onclick="openModal('interviewModal')">
+                            <div class="action-icon">
+                                <i class="fas fa-calendar-plus"></i>
+                            </div>
+                            <h4>Schedule Interview</h4>
+                            <p>Set up a new interview with a candidate</p>
+                        </div>
+                        <div class="action-card" onclick="generateReport()">
+                            <div class="action-icon">
+                                <i class="fas fa-file-export"></i>
+                            </div>
+                            <h4>Generate Report</h4>
+                            <p>Create recruitment analytics report</p>
+                        </div>
+                        <div class="action-card" onclick="openModal('jobModal')">
+                            <div class="action-icon">
+                                <i class="fas fa-bullhorn"></i>
+                            </div>
+                            <h4>Post Job</h4>
+                            <p>Create and publish a new job opening</p>
+                        </div>
+                    </div>
+
+                    <h2 class="section-title" style="margin-top: 2rem;">
+                        <i class="fas fa-calendar-day"></i> Upcoming Interviews
+                    </h2>
+                    <div class="activity-list" id="upcomingInterviews"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Candidate Modal -->
+    <div id="candidateModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Add New Candidate</h2>
+                <button class="close-btn" onclick="closeModal('candidateModal')">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <form id="candidateForm" onsubmit="addCandidate(event)">
+                <div class="form-group">
+                    <label>Full Name *</label>
+                    <input type="text" id="candidateName" required>
+                </div>
+                <div class="form-group">
+                    <label>Email *</label>
+                    <input type="email" id="candidateEmail" required>
+                </div>
+                <div class="form-group">
+                    <label>Phone</label>
+                    <input type="tel" id="candidatePhone">
+                </div>
+                <div class="form-group">
+                    <label>Position *</label>
+                    <select id="candidatePosition" required>
+                        <option value="">Select Position</option>
+                        <option value="Senior Developer">Senior Developer</option>
+                        <option value="Project Manager">Project Manager</option>
+                        <option value="UX Designer">UX Designer</option>
+                        <option value="Data Analyst">Data Analyst</option>
+                        <option value="DevOps Engineer">DevOps Engineer</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Status</label>
+                    <select id="candidateStatus">
+                        <option value="new">New</option>
+                        <option value="review">Under Review</option>
+                        <option value="approved">Approved</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Notes</label>
+                    <textarea id="candidateNotes"></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%;">
+                    <i class="fas fa-user-plus"></i> Add Candidate
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Schedule Interview Modal -->
+    <div id="interviewModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Schedule Interview</h2>
+                <button class="close-btn" onclick="closeModal('interviewModal')">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <form id="interviewForm" onsubmit="scheduleInterview(event)">
+                <div class="form-group">
+                    <label>Candidate *</label>
+                    <select id="interviewCandidate" required>
+                        <option value="">Select Candidate</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Interview Type *</label>
+                    <select id="interviewType" required>
+                        <option value="">Select Type</option>
+                        <option value="Technical">Technical Interview</option>
+                        <option value="HR">HR Interview</option>
+                        <option value="Final">Final Interview</option>
+                        <option value="Phone">Phone Screening</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Date *</label>
+                    <input type="date" id="interviewDate" required>
+                </div>
+                <div class="form-group">
+                    <label>Time *</label>
+                    <input type="time" id="interviewTime" required>
+                </div>
+                <div class="form-group">
+                    <label>Duration (minutes)</label>
+                    <input type="number" id="interviewDuration" value="60" min="15" step="15">
+                </div>
+                <div class="form-group">
+                    <label>Interviewer</label>
+                    <input type="text" id="interviewInterviewer">
+                </div>
+                <div class="form-group">
+                    <label>Notes</label>
+                    <textarea id="interviewNotes"></textarea>
+                </div>
+                <button type="submit" class="btn btn-success" style="width: 100%;">
+                    <i class="fas fa-calendar-check"></i> Schedule Interview
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Job Posting Modal -->
+    <div id="jobModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Create Job Posting</h2>
+                <button class="close-btn" onclick="closeModal('jobModal')">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <form id="jobForm" onsubmit="createJob(event)">
+                <div class="form-group">
+                    <label>Job Title *</label>
+                    <input type="text" id="jobTitle" required>
+                </div>
+                <div class="form-group">
+                    <label>Department *</label>
+                    <select id="jobDepartment" required>
+                        <option value="">Select Department</option>
+                        <option value="Engineering">Engineering</option>
+                        <option value="Product">Product</option>
+                        <option value="Design">Design</option>
+                        <option value="Marketing">Marketing</option>
+                        <option value="Sales">Sales</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Employment Type *</label>
+                    <select id="jobType" required>
+                        <option value="">Select Type</option>
+                        <option value="Full-time">Full-time</option>
+                        <option value="Part-time">Part-time</option>
+                        <option value="Contract">Contract</option>
+                        <option value="Internship">Internship</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Location</label>
+                    <input type="text" id="jobLocation" placeholder="e.g., Remote, New York, etc.">
+                </div>
+                <div class="form-group">
+                    <label>Description *</label>
+                    <textarea id="jobDescription" required></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%;">
+                    <i class="fas fa-bullhorn"></i> Post Job
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast">
+        <i class="fas fa-check-circle"></i>
+        <span id="toastMessage"></span>
+    </div>
+
+    <script>
+        // Data Management
+        let candidates = [
+            { id: 1, name: 'Sarah Johnson', position: 'Project Manager', status: 'review', email: 'sarah.j@email.com', initials: 'SJ' },
+            { id: 2, name: 'Michael Chen', position: 'Senior Developer', status: 'approved', email: 'michael.c@email.com', initials: 'MC' },
+            { id: 3, name: 'Robert Parker', position: 'UX Designer', status: 'new', email: 'robert.p@email.com', initials: 'RP' },
+            { id: 4, name: 'Amanda Davis', position: 'Data Analyst', status: 'rejected', email: 'amanda.d@email.com', initials: 'AD' }
+        ];
+
+        let interviews = [
+            { candidate: 'Sarah Johnson', type: 'Technical Interview', date: 'Today, 2:00 PM', icon: 'video', color: 'success' },
+            { candidate: 'Team Meeting', type: 'Hiring Committee', date: 'Tomorrow, 10:00 AM', icon: 'users', color: 'primary' },
+            { candidate: 'Robert Parker', type: 'Final Interview', date: 'May 15, 11:30 AM', icon: 'user-tie', color: 'warning' }
+        ];
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            renderCandidates();
+            renderInterviews();
+            updateCandidateDropdown();
+            
+            // Add scroll effect to navbar
+            window.addEventListener('scroll', function() {
+                const navbar = document.getElementById('navbar');
+                if (window.scrollY > 50) {
+                    navbar.classList.add('scrolled');
+                } else {
+                    navbar.classList.remove('scrolled');
+                }
+            });
+
+            // Set min date for interview scheduling
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('interviewDate').setAttribute('min', today);
+        });
+
+        // Render Functions
+        function renderCandidates() {
+            const container = document.getElementById('candidatesList');
+            container.innerHTML = candidates.map(c => `
+                <div class="candidate-item">
+                    <div class="candidate-avatar">${c.initials}</div>
+                    <div class="candidate-info">
+                        <h4>${c.name}</h4>
+                        <p>${c.position}</p>
+                    </div>
+                    <div class="candidate-status status-${c.status}">
+                        ${getStatusText(c.status)}
+                    </div>
+                    <button class="btn btn-outline" onclick="viewCandidate(${c.id})">View</button>
+                </div>
+            `).join('');
+        }
+
+        function renderInterviews() {
+            const container = document.getElementById('upcomingInterviews');
+            container.innerHTML = interviews.map(i => `
+                <div class="activity-item">
+                    <div class="activity-icon" style="background: ${getColorBg(i.color)}; color: var(--${i.color});">
+                        <i class="fas fa-${i.icon}"></i>
+                    </div>
+                    <div class="activity-content">
+                        <p><strong>${i.candidate}</strong> - ${i.type}</p>
+                        <div class="activity-time">${i.date}</div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function updateCandidateDropdown() {
+            const select = document.getElementById('interviewCandidate');
+            select.innerHTML = '<option value="">Select Candidate</option>' + 
+                candidates.filter(c => c.status !== 'rejected').map(c => 
+                    `<option value="${c.id}">${c.name} - ${c.position}</option>`
+                ).join('');
+        }
+
+        // Helper Functions
+        function getStatusText(status) {
+            const statusMap = {
+                'new': 'New',
+                'review': 'Under Review',
+                'approved': 'Approved',
+                'rejected': 'Rejected'
+            };
+            return statusMap[status] || status;
+        }
+
+        function getColorBg(color) {
+            const colorMap = {
+                'success': '#e8f5e9',
+                'primary': '#e3f2fd',
+                'warning': '#fff3e0',
+                'danger': '#ffebee'
+            };
+            return colorMap[color] || '#f0f0f0';
+        }
+
+        function getInitials(name) {
+            return name.split(' ').map(n => n[0]).join('').toUpperCase();
+        }
+
+        // Modal Functions
+        function openModal(modalId) {
+            document.getElementById(modalId).classList.add('active');
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('active');
+        }
+
+        // Close modal on outside click
+        window.onclick = function(event) {
+            if (event.target.classList.contains('modal')) {
+                event.target.classList.remove('active');
+            }
+        }
+
+        // Form Submissions
+        function addCandidate(event) {
+            event.preventDefault();
+            
+            const name = document.getElementById('candidateName').value;
+            const email = document.getElementById('candidateEmail').value;
+            const position = document.getElementById('candidatePosition').value;
+            const status = document.getElementById('candidateStatus').value;
+            
+            const newCandidate = {
+                id: candidates.length + 1,
+                name: name,
+                position: position,
+                status: status,
+                email: email,
+                initials: getInitials(name)
+            };
+            
+            candidates.unshift(newCandidate);
+            renderCandidates();
+            updateCandidateDropdown();
+            updateStats();
+            
+            closeModal('candidateModal');
+            document.getElementById('candidateForm').reset();
+            showToast(`${name} has been added successfully!`, 'success');
+        }
+
+        function scheduleInterview(event) {
+            event.preventDefault();
+            
+            const candidateId = document.getElementById('interviewCandidate').value;
+            const type = document.getElementById('interviewType').value;
+            const date = document.getElementById('interviewDate').value;
+            const time = document.getElementById('interviewTime').value;
+            
+            const candidate = candidates.find(c => c.id == candidateId);
+            
+            const newInterview = {
+                candidate: candidate.name,
+                type: type,
+                date: formatDateTime(date, time),
+                icon: 'video',
+                color: 'primary'
+            };
+            
+            interviews.unshift(newInterview);
+            renderInterviews();
+            
+            closeModal('interviewModal');
+            document.getElementById('interviewForm').reset();
+            showToast(`Interview scheduled with ${candidate.name}!`, 'success');
+            
+            // Update stats
+            const scheduledCount = document.getElementById('scheduledInterviews');
+            scheduledCount.textContent = parseInt(scheduledCount.textContent) + 1;
+        }
+
+        function createJob(event) {
+            event.preventDefault();
+            
+            const title = document.getElementById('jobTitle').value;
+            const department = document.getElementById('jobDepartment').value;
+            
+            closeModal('jobModal');
+            document.getElementById('jobForm').reset();
+            showToast(`Job posting for ${title} created successfully!`, 'success');
+            
+            // Update stats
+            const openPositions = document.getElementById('openPositions');
+            openPositions.textContent = parseInt(openPositions.textContent) + 1;
+        }
+
+        // View Candidate
+        function viewCandidate(id) {
+            const candidate = candidates.find(c => c.id === id);
+            if (candidate) {
+                showToast(`Viewing details for ${candidate.name}`, 'info');
+            }
+        }
+
+        // Generate Report
+        function generateReport() {
+            showToast('Generating recruitment analytics report...', 'info');
+            
+            setTimeout(() => {
+                showToast('Report generated successfully!', 'success');
+            }, 2000);
+        }
+
+        // Search Functionality
+        function searchContent() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const filteredCandidates = candidates.filter(c => 
+                c.name.toLowerCase().includes(searchTerm) || 
+                c.position.toLowerCase().includes(searchTerm)
+            );
+            
+            const container = document.getElementById('candidatesList');
+            container.innerHTML = filteredCandidates.map(c => `
+                <div class="candidate-item">
+                    <div class="candidate-avatar">${c.initials}</div>
+                    <div class="candidate-info">
+                        <h4>${c.name}</h4>
+                        <p>${c.position}</p>
+                    </div>
+                    <div class="candidate-status status-${c.status}">
+                        ${getStatusText(c.status)}
+                    </div>
+                    <button class="btn btn-outline" onclick="viewCandidate(${c.id})">View</button>
+                </div>
+            `).join('');
+        }
+
+        // Toast Notification
+        function showToast(message, type = 'success') {
+            const toast = document.getElementById('toast');
+            const toastMessage = document.getElementById('toastMessage');
+            const icon = toast.querySelector('i');
+            
+            // Update icon based on type
+            const iconMap = {
+                'success': 'fa-check-circle',
+                'error': 'fa-exclamation-circle',
+                'info': 'fa-info-circle'
+            };
+            
+            icon.className = `fas ${iconMap[type] || 'fa-check-circle'}`;
+            toast.className = `toast ${type}`;
+            toastMessage.textContent = message;
+            
+            toast.classList.add('active');
+            
+            setTimeout(() => {
+                toast.classList.remove('active');
+            }, 3000);
+        }
+
+        // Update Statistics
+        function updateStats() {
+            document.getElementById('totalCandidates').textContent = candidates.length;
+            document.getElementById('pendingReviews').textContent = 
+                candidates.filter(c => c.status === 'review').length;
+        }
+
+        // Format Date Time
+        function formatDateTime(date, time) {
+            const d = new Date(date + 'T' + time);
+            const options = { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' };
+            return d.toLocaleDateString('en-US', options);
+        }
+
+        // Section Navigation
+        function showSection(section) {
+            showToast(`Navigating to ${section}...`, 'info');
+            
+            // Update active nav link
+            document.querySelectorAll('.nav-links a').forEach(link => {
+                link.classList.remove('active');
+            });
+            event.target.closest('a').classList.add('active');
+        }
+
+        // Toggle Notifications
+        function toggleNotifications() {
+            showToast('You have 3 new notifications', 'info');
+        }
+
+        // Toggle User Menu
+        function toggleUserMenu() {
+            showToast('User menu opened', 'info');
+        }
+
+        // Toggle Filters
+        function toggleFilters() {
+            showToast('Filters panel opened', 'info');
+        }
+
+        // Logout Function
+        function logout() {
+            showToast('Logging out...', 'info');
+            
+            // Simulate a brief delay before redirecting
+            setTimeout(() => {
+                window.location.href = 'index.html';
+            }, 1500);
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,1502 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HR Connect Pro | Job Search</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #4361ee;
+            --secondary: #3a0ca3;
+            --accent: #f72585;
+            --success: #4bb543;
+            --warning: #ffc107;
+            --danger: #dc3545;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --white: #ffffff;
+            --card-bg: rgba(255, 255, 255, 0.85);
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            --card-border-radius: 20px;
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            color: var(--dark);
+            background: linear-gradient(-45deg, #7209b7, #3a0ca3, #4361ee, #4cc9f0);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Animated background elements */
+        .bg-bubbles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .bg-bubbles li {
+            position: absolute;
+            list-style: none;
+            display: block;
+            width: 40px;
+            height: 40px;
+            background-color: rgba(255, 255, 255, 0.15);
+            bottom: -160px;
+            border-radius: 50%;
+            animation: square 25s infinite;
+            transition-timing-function: linear;
+        }
+
+        .bg-bubbles li:nth-child(1) {
+            left: 10%;
+            animation-delay: 0s;
+            width: 80px;
+            height: 80px;
+        }
+
+        .bg-bubbles li:nth-child(2) {
+            left: 20%;
+            animation-delay: 2s;
+            animation-duration: 17s;
+            width: 60px;
+            height: 60px;
+        }
+
+        .bg-bubbles li:nth-child(3) {
+            left: 25%;
+            animation-delay: 4s;
+            width: 120px;
+            height: 120px;
+        }
+
+        .bg-bubbles li:nth-child(4) {
+            left: 40%;
+            animation-delay: 0s;
+            animation-duration: 22s;
+            width: 160px;
+            height: 160px;
+        }
+
+        .bg-bubbles li:nth-child(5) {
+            left: 70%;
+            animation-delay: 3s;
+            width: 100px;
+            height: 100px;
+        }
+
+        .bg-bubbles li:nth-child(6) {
+            left: 80%;
+            animation-delay: 2s;
+            width: 120px;
+            height: 120px;
+        }
+
+        .bg-bubbles li:nth-child(7) {
+            left: 32%;
+            animation-delay: 6s;
+            width: 140px;
+            height: 140px;
+        }
+
+        .bg-bubbles li:nth-child(8) {
+            left: 55%;
+            animation-delay: 8s;
+            animation-duration: 18s;
+            width: 40px;
+            height: 40px;
+        }
+
+        .bg-bubbles li:nth-child(9) {
+            left: 25%;
+            animation-delay: 2s;
+            animation-duration: 20s;
+            width: 20px;
+            height: 20px;
+        }
+
+        .bg-bubbles li:nth-child(10) {
+            left: 90%;
+            animation-delay: 4s;
+            width: 80px;
+            height: 80px;
+        }
+
+        @keyframes gradientBG {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        @keyframes square {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 1;
+                border-radius: 50%;
+            }
+            100% {
+                transform: translateY(-1000px) rotate(720deg);
+                opacity: 0;
+                border-radius: 50%;
+            }
+        }
+
+        /* Navigation */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: var(--shadow);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: var(--primary);
+        }
+
+        .logo i {
+            font-size: 2rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 500;
+            transition: var(--transition);
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            background-color: var(--primary);
+            color: var(--white);
+        }
+
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        /* Main Content */
+        .main-container {
+            margin-top: 80px;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .page {
+            width: 100%;
+            max-width: 1200px;
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border-radius: var(--card-border-radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #eee;
+        }
+
+        .page-title {
+            font-size: 1.8rem;
+            color: var(--primary);
+            font-weight: 700;
+        }
+
+        .page-subtitle {
+            color: #666;
+            margin-top: 0.5rem;
+        }
+
+        /* Job Search */
+        .search-hero {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .search-title {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--primary);
+        }
+
+        .search-form {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr auto;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .search-input {
+            position: relative;
+        }
+
+        .search-input i {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #999;
+        }
+
+        .search-input input {
+            width: 100%;
+            padding: 0.8rem 1rem 0.8rem 2.5rem;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+
+        .search-select {
+            padding: 0.8rem 1rem;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background: white;
+            font-size: 1rem;
+        }
+
+        .btn {
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid var(--primary);
+            color: var(--primary);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .search-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            justify-content: center;
+        }
+
+        .search-tag {
+            background: #e3f2fd;
+            color: var(--primary);
+            padding: 0.4rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .search-tag:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        .search-container {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 2rem;
+        }
+
+        .filters-sidebar {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            height: fit-content;
+            position: sticky;
+            top: 100px;
+        }
+
+        .filter-section {
+            margin-bottom: 2rem;
+        }
+
+        .filter-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--primary);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .filter-reset {
+            background: none;
+            border: none;
+            color: var(--primary);
+            font-size: 0.8rem;
+            cursor: pointer;
+        }
+
+        .filter-options {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+
+        .filter-option {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .filter-option input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            accent-color: var(--primary);
+        }
+
+        .filter-option label {
+            cursor: pointer;
+            color: #555;
+        }
+
+        .salary-range {
+            margin-top: 1rem;
+        }
+
+        .range-values {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 0.5rem;
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .jobs-results {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .results-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .results-count {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .sort-options {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .job-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: var(--transition);
+            border-left: 4px solid var(--primary);
+        }
+
+        .job-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .job-card.featured {
+            border-left-color: var(--accent);
+            background: linear-gradient(to right, #ffffff, #fff9f9);
+        }
+
+        .job-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
+
+        .job-info h3 {
+            margin-bottom: 0.5rem;
+            color: var(--dark);
+        }
+
+        .job-info p {
+            color: #666;
+            margin-bottom: 0.3rem;
+        }
+
+        .job-meta {
+            display: flex;
+            gap: 1rem;
+            font-size: 0.9rem;
+            color: #888;
+            margin-top: 0.5rem;
+        }
+
+        .job-type {
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .type-fulltime {
+            background: #e8f5e9;
+            color: var(--success);
+        }
+
+        .type-parttime {
+            background: #e3f2fd;
+            color: var(--primary);
+        }
+
+        .type-remote {
+            background: #fff3e0;
+            color: var(--warning);
+        }
+
+        .type-contract {
+            background: #fce4ec;
+            color: var(--accent);
+        }
+
+        .job-salary {
+            font-weight: 600;
+            color: var(--success);
+            font-size: 1rem;
+        }
+
+        .job-features {
+            display: flex;
+            gap: 1rem;
+            margin: 1rem 0;
+            flex-wrap: wrap;
+        }
+
+        .feature-tag {
+            background: #f8f9fa;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            color: #666;
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        .job-description {
+            color: #555;
+            line-height: 1.5;
+            margin-bottom: 1rem;
+            display: -webkit-box;
+            
+            
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .job-skills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .skill-tag {
+            background: #e3f2fd;
+            color: var(--primary);
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .job-actions {
+            display: flex;
+            gap: 0.5rem;
+            justify-content: space-between;
+        }
+
+        .job-match {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .match-bar {
+            width: 80px;
+            height: 6px;
+            background: #e9ecef;
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .match-fill {
+            height: 100%;
+            background: var(--success);
+            border-radius: 3px;
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 2rem;
+        }
+
+        .page-btn {
+            width: 40px;
+            height: 40px;
+            border: 1px solid #ddd;
+            background: white;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .page-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .page-btn:hover:not(.active) {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 3rem;
+            color: #666;
+        }
+
+        .empty-state i {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: #ddd;
+        }
+
+        .empty-state h3 {
+            margin-bottom: 0.5rem;
+            color: #999;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 800px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .modal-header {
+            padding: 1.5rem;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-header h3 {
+            margin: 0;
+        }
+
+        .close-modal {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        .modal-body {
+            padding: 1.5rem;
+        }
+
+        .job-detail-section {
+            margin-bottom: 2rem;
+        }
+
+        .job-detail-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--primary);
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid #eee;
+        }
+
+        .job-detail-content {
+            line-height: 1.6;
+            color: #555;
+        }
+
+        .requirements-list, .benefits-list {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        .requirements-list li, .benefits-list li {
+            padding: 0.5rem 0;
+            display: flex;
+            align-items: flex-start;
+            gap: 0.5rem;
+        }
+
+        .requirements-list li:before {
+            content: "✓";
+            color: var(--success);
+            font-weight: bold;
+        }
+
+        .benefits-list li:before {
+            content: "🎁";
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 1rem;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .main-container {
+                padding: 1rem;
+            }
+
+            .page {
+                padding: 1.5rem;
+            }
+
+            .search-form {
+                grid-template-columns: 1fr;
+            }
+
+            .search-container {
+                grid-template-columns: 1fr;
+            }
+
+            .filters-sidebar {
+                position: static;
+            }
+
+            .job-header {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .job-actions {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .results-header {
+                flex-direction: column;
+                gap: 1rem;
+                align-items: flex-start;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Animated background elements -->
+    <ul class="bg-bubbles">
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+    </ul>
+
+    <!-- Job Search Page -->
+    <div id="job-search">
+        <nav class="navbar">
+            <div class="logo">
+                <i class="fas fa-handshake"></i>
+                <span>HR Connect Pro</span>
+            </div>
+            <div class="nav-links">
+                <a href="JOB_QUESTION.html"><i class="fas fa-question-circle"></i> Dashboard</a>
+                <a href="JOB_Application.html"><i class="fas fa-tasks"></i> Applications</a>
+                <a href="#" class="active"><i class="fas fa-briefcase"></i> Job Search</a>
+                <a href="JOB_Resume.html"><i class="fas fa-file-alt"></i> My Resume</a>
+                
+            </div>
+            <div class="user-menu">
+                <div class="user-avatar">JS</div>
+                <span>Sarah Johnson</span>
+                <a href="#"><i class="fas fa-sign-out-alt"></i></a>
+            </div>
+        </nav>
+
+        <div class="main-container">
+            <div class="page">
+                <div class="page-header">
+                    <div>
+                        <h1 class="page-title">Find Your Dream Job</h1>
+                        <p class="page-subtitle">Discover opportunities that match your skills and aspirations</p>
+                    </div>
+                    <div class="btn btn-outline">
+                        <i class="fas fa-bell"></i> Job Alerts
+                    </div>
+                </div>
+
+                <!-- Search Hero Section -->
+                <div class="search-hero">
+                    <h2 class="search-title">What are you looking for?</h2>
+                    <form class="search-form" id="jobSearchForm">
+                        <div class="search-input">
+                            <i class="fas fa-search"></i>
+                            <input type="text" placeholder="Job title, keywords, or company" id="jobKeywords">
+                        </div>
+                        <div class="search-input">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <input type="text" placeholder="Location" id="jobLocation">
+                        </div>
+                        <select class="search-select" id="jobCategory">
+                            <option value="">All Categories</option>
+                            <option value="technology">Technology</option>
+                            <option value="marketing">Marketing</option>
+                            <option value="design">Design</option>
+                            <option value="sales">Sales</option>
+                            <option value="finance">Finance</option>
+                        </select>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-search"></i> Search
+                        </button>
+                    </form>
+                    <div class="search-tags">
+                        <span class="search-tag">Remote Jobs</span>
+                        <span class="search-tag">Entry Level</span>
+                        <span class="search-tag">Senior Positions</span>
+                        <span class="search-tag">Startups</span>
+                        <span class="search-tag">Fortune 500</span>
+                    </div>
+                </div>
+
+                <div class="search-container">
+                    <!-- Filters Sidebar -->
+                    <div class="filters-sidebar">
+                        <div class="filter-section">
+                            <div class="filter-title">
+                                Job Type
+                                <button class="filter-reset">Reset</button>
+                            </div>
+                            <div class="filter-options">
+                                <div class="filter-option">
+                                    <input type="checkbox" id="fulltime" checked>
+                                    <label for="fulltime">Full-time</label>
+                                </div>
+                                <div class="filter-option">
+                                    <input type="checkbox" id="parttime">
+                                    <label for="parttime">Part-time</label>
+                                </div>
+                                <div class="filter-option">
+                                    <input type="checkbox" id="contract">
+                                    <label for="contract">Contract</label>
+                                </div>
+                                <div class="filter-option">
+                                    <input type="checkbox" id="internship">
+                                    <label for="internship">Internship</label>
+                                </div>
+                                <div class="filter-option">
+                                    <input type="checkbox" id="remote" checked>
+                                    <label for="remote">Remote</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="filter-section">
+                            <div class="filter-title">
+                                Experience Level
+                                <button class="filter-reset">Reset</button>
+                            </div>
+                            <div class="filter-options">
+                                <div class="filter-option">
+                                    <input type="checkbox" id="entry" checked>
+                                    <label for="entry">Entry Level (0-2 years)</label>
+                                </div>
+                                <div class="filter-option">
+                                    <input type="checkbox" id="mid" checked>
+                                    <label for="mid">Mid Level (3-5 years)</label>
+                                </div>
+                                <div class="filter-option">
+                                    <input type="checkbox" id="senior" checked>
+                                    <label for="senior">Senior Level (5+ years)</label>
+                                </div>
+                                <div class="filter-option">
+                                    <input type="checkbox" id="executive">
+                                    <label for="executive">Executive</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="filter-section">
+                            <div class="filter-title">
+                                Salary Range
+                                <button class="filter-reset">Reset</button>
+                            </div>
+                            <input type="range" min="0" max="200000" value="80000" class="salary-range" step="10000">
+                            <div class="range-values">
+                                <span>$0</span>
+                                <span>$80,000+</span>
+                                <span>$200,000</span>
+                            </div>
+                        </div>
+
+                        <div class="filter-section">
+                            <div class="filter-title">
+                                Company Size
+                                <button class="filter-reset">Reset</button>
+                            </div>
+                            <div class="filter-options">
+                                <div class="filter-option">
+                                    <input type="checkbox" id="startup" checked>
+                                    <label for="startup">Startup (1-50)</label>
+                                </div>
+                                <div class="filter-option">
+                                    <input type="checkbox" id="small" checked>
+                                    <label for="small">Small (51-200)</label>
+                                </div>
+                                <div class="filter-option">
+                                    <input type="checkbox" id="medium" checked>
+                                    <label for="medium">Medium (201-1000)</label>
+                                </div>
+                                <div class="filter-option">
+                                    <input type="checkbox" id="large" checked>
+                                    <label for="large">Large (1000+)</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="filter-section">
+                            <div class="filter-title">
+                                Posted Within
+                                <button class="filter-reset">Reset</button>
+                            </div>
+                            <div class="filter-options">
+                                <div class="filter-option">
+                                    <input type="radio" id="anytime" name="posted" checked>
+                                    <label for="anytime">Anytime</label>
+                                </div>
+                                <div class="filter-option">
+                                    <input type="radio" id="day" name="posted">
+                                    <label for="day">Past 24 hours</label>
+                                </div>
+                                <div class="filter-option">
+                                    <input type="radio" id="week" name="posted">
+                                    <label for="week">Past week</label>
+                                </div>
+                                <div class="filter-option">
+                                    <input type="radio" id="month" name="posted">
+                                    <label for="month">Past month</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Jobs Results -->
+                    <div class="jobs-results">
+                        <div class="results-header">
+                            <div class="results-count">Showing 24 of 127 jobs</div>
+                            <div class="sort-options">
+                                <span>Sort by:</span>
+                                <select class="search-select">
+                                    <option>Most Relevant</option>
+                                    <option>Newest</option>
+                                    <option>Highest Salary</option>
+                                    <option>Best Match</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Job Cards -->
+                        <div id="jobsContainer">
+                            <!-- Job 1 - Featured -->
+                            <div class="job-card featured">
+                                <div class="job-header">
+                                    <div class="job-info">
+                                        <h3>Senior Product Designer</h3>
+                                        <p>TechVision Solutions • San Francisco, CA / Remote</p>
+                                        <div class="job-meta">
+                                            <span><i class="far fa-clock"></i> Posted 2 days ago</span>
+                                            <span><i class="far fa-eye"></i> 142 views</span>
+                                            <span><i class="far fa-user"></i> 23 applicants</span>
+                                        </div>
+                                    </div>
+                                    <div class="job-type type-remote">Remote</div>
+                                </div>
+                                <div class="job-salary">$120,000 - $140,000</div>
+                                <div class="job-features">
+                                    <span class="feature-tag"><i class="fas fa-briefcase"></i> Full-time</span>
+                                    <span class="feature-tag"><i class="fas fa-chart-line"></i> Senior Level</span>
+                                    <span class="feature-tag"><i class="fas fa-rocket"></i> Equity</span>
+                                </div>
+                                <p class="job-description">
+                                    We're looking for a Senior Product Designer to join our growing design team. You'll be responsible for creating beautiful, intuitive user experiences for our SaaS platform.
+                                </p>
+                                <div class="job-skills">
+                                    <span class="skill-tag">Figma</span>
+                                    <span class="skill-tag">UI/UX Design</span>
+                                    <span class="skill-tag">Prototyping</span>
+                                    <span class="skill-tag">Design Systems</span>
+                                </div>
+                                <div class="job-actions">
+                                    <div class="job-match">
+                                        <span>Your match:</span>
+                                        <div class="match-bar">
+                                            <div class="match-fill" style="width: 92%"></div>
+                                        </div>
+                                        <span>92%</span>
+                                    </div>
+                                    <div>
+                                        <button class="btn btn-outline" onclick="saveJob(1)">
+                                            <i class="far fa-bookmark"></i> Save
+                                        </button>
+                                        <button class="btn btn-primary" onclick="viewJobDetails(1)">
+                                            Apply Now
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Job 2 -->
+                            <div class="job-card">
+                                <div class="job-header">
+                                    <div class="job-info">
+                                        <h3>Frontend Developer</h3>
+                                        <p>Innovate Labs • New York, NY</p>
+                                        <div class="job-meta">
+                                            <span><i class="far fa-clock"></i> Posted 1 week ago</span>
+                                            <span><i class="far fa-eye"></i> 89 views</span>
+                                            <span><i class="far fa-user"></i> 15 applicants</span>
+                                        </div>
+                                    </div>
+                                    <div class="job-type type-fulltime">Full-time</div>
+                                </div>
+                                <div class="job-salary">$95,000 - $115,000</div>
+                                <div class="job-features">
+                                    <span class="feature-tag"><i class="fas fa-briefcase"></i> Full-time</span>
+                                    <span class="feature-tag"><i class="fas fa-chart-line"></i> Mid Level</span>
+                                    <span class="feature-tag"><i class="fas fa-dumbbell"></i> Gym Membership</span>
+                                </div>
+                                <p class="job-description">
+                                    Join our frontend team to build responsive web applications using React, TypeScript, and modern CSS. You'll collaborate with designers and backend engineers to deliver exceptional user experiences.
+                                </p>
+                                <div class="job-skills">
+                                    <span class="skill-tag">React</span>
+                                    <span class="skill-tag">TypeScript</span>
+                                    <span class="skill-tag">CSS</span>
+                                    <span class="skill-tag">GraphQL</span>
+                                </div>
+                                <div class="job-actions">
+                                    <div class="job-match">
+                                        <span>Your match:</span>
+                                        <div class="match-bar">
+                                            <div class="match-fill" style="width: 87%"></div>
+                                        </div>
+                                        <span>87%</span>
+                                    </div>
+                                    <div>
+                                        <button class="btn btn-outline" onclick="saveJob(2)">
+                                            <i class="far fa-bookmark"></i> Save
+                                        </button>
+                                        <button class="btn btn-primary" onclick="viewJobDetails(2)">
+                                            Apply Now
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Job 3 -->
+                            <div class="job-card">
+                                <div class="job-header">
+                                    <div class="job-info">
+                                        <h3>Data Scientist</h3>
+                                        <p>DataInsight Corp • Remote</p>
+                                        <div class="job-meta">
+                                            <span><i class="far fa-clock"></i> Posted 3 days ago</span>
+                                            <span><i class="far fa-eye"></i> 167 views</span>
+                                            <span><i class="far fa-user"></i> 31 applicants</span>
+                                        </div>
+                                    </div>
+                                    <div class="job-type type-remote">Remote</div>
+                                </div>
+                                <div class="job-salary">$110,000 - $130,000</div>
+                                <div class="job-features">
+                                    <span class="feature-tag"><i class="fas fa-briefcase"></i> Full-time</span>
+                                    <span class="feature-tag"><i class="fas fa-chart-line"></i> Senior Level</span>
+                                    <span class="feature-tag"><i class="fas fa-graduation-cap"></i> Learning Budget</span>
+                                </div>
+                                <p class="job-description">
+                                    We're seeking a Data Scientist to analyze complex datasets and build machine learning models. You'll work with cross-functional teams to derive insights and drive business decisions.
+                                </p>
+                                <div class="job-skills">
+                                    <span class="skill-tag">Python</span>
+                                    <span class="skill-tag">Machine Learning</span>
+                                    <span class="skill-tag">SQL</span>
+                                    <span class="skill-tag">TensorFlow</span>
+                                </div>
+                                <div class="job-actions">
+                                    <div class="job-match">
+                                        <span>Your match:</span>
+                                        <div class="match-bar">
+                                            <div class="match-fill" style="width: 78%"></div>
+                                        </div>
+                                        <span>78%</span>
+                                    </div>
+                                    <div>
+                                        <button class="btn btn-outline" onclick="saveJob(3)">
+                                            <i class="far fa-bookmark"></i> Save
+                                        </button>
+                                        <button class="btn btn-primary" onclick="viewJobDetails(3)">
+                                            Apply Now
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Pagination -->
+                        <div class="pagination">
+                            <button class="page-btn"><i class="fas fa-chevron-left"></i></button>
+                            <button class="page-btn active">1</button>
+                            <button class="page-btn">2</button>
+                            <button class="page-btn">3</button>
+                            <button class="page-btn">4</button>
+                            <button class="page-btn"><i class="fas fa-chevron-right"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Job Details Modal -->
+    <div class="modal" id="jobModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalTitle">Job Details</h3>
+                <button class="close-modal" onclick="closeModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div id="modalContent">
+                    <!-- Modal content will be dynamically inserted -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Sample jobs data
+        const jobs = [
+            {
+                id: 1,
+                title: "Senior Product Designer",
+                company: "TechVision Solutions",
+                location: "San Francisco, CA / Remote",
+                type: "remote",
+                salary: "$120,000 - $140,000",
+                level: "Senior",
+                posted: "2 days ago",
+                views: 142,
+                applicants: 23,
+                match: 92,
+                description: "We're looking for a Senior Product Designer to join our growing design team. You'll be responsible for creating beautiful, intuitive user experiences for our SaaS platform.",
+                fullDescription: `
+                    <p>TechVision Solutions is revolutionizing the way businesses manage their operations through our innovative SaaS platform. We're looking for a Senior Product Designer who is passionate about creating exceptional user experiences.</p>
+                    
+                    <p><strong>What You'll Do:</strong></p>
+                    <ul class="requirements-list">
+                        <li>Lead design projects from concept to execution</li>
+                        <li>Create wireframes, prototypes, and high-fidelity designs</li>
+                        <li>Collaborate with product managers and engineers</li>
+                        <li>Conduct user research and usability testing</li>
+                        <li>Contribute to our design system and component library</li>
+                    </ul>
+                    
+                    <p><strong>Requirements:</strong></p>
+                    <ul class="requirements-list">
+                        <li>5+ years of product design experience</li>
+                        <li>Expertise in Figma and prototyping tools</li>
+                        <li>Strong portfolio showcasing UX/UI work</li>
+                        <li>Experience with design systems</li>
+                        <li>Excellent communication and collaboration skills</li>
+                    </ul>
+                    
+                    <p><strong>Benefits:</strong></p>
+                    <ul class="benefits-list">
+                        <li>Competitive salary and equity</li>
+                        <li>Flexible remote work options</li>
+                        <li>Comprehensive health insurance</li>
+                        <li>Learning and development budget</li>
+                        <li>Unlimited PTO</li>
+                    </ul>
+                `,
+                skills: ["Figma", "UI/UX Design", "Prototyping", "Design Systems"],
+                features: ["Full-time", "Senior Level", "Equity"],
+                category: "design"
+            },
+            {
+                id: 2,
+                title: "Frontend Developer",
+                company: "Innovate Labs",
+                location: "New York, NY",
+                type: "fulltime",
+                salary: "$95,000 - $115,000",
+                level: "Mid",
+                posted: "1 week ago",
+                views: 89,
+                applicants: 15,
+                match: 87,
+                description: "Join our frontend team to build responsive web applications using React, TypeScript, and modern CSS. You'll collaborate with designers and backend engineers to deliver exceptional user experiences.",
+                fullDescription: `
+                    <p>Innovate Labs is building the next generation of digital products that transform industries. We're seeking a Frontend Developer to help us create beautiful, performant web applications.</p>
+                    
+                    <p><strong>Responsibilities:</strong></p>
+                    <ul class="requirements-list">
+                        <li>Develop responsive web applications using React and TypeScript</li>
+                        <li>Collaborate with UX designers to implement pixel-perfect designs</li>
+                        <li>Write clean, maintainable, and testable code</li>
+                        <li>Participate in code reviews and technical discussions</li>
+                        <li>Optimize applications for performance and accessibility</li>
+                    </ul>
+                    
+                    <p><strong>Qualifications:</strong></p>
+                    <ul class="requirements-list">
+                        <li>3+ years of frontend development experience</li>
+                        <li>Strong proficiency in React and TypeScript</li>
+                        <li>Experience with modern CSS and styling solutions</li>
+                        <li>Familiarity with GraphQL and REST APIs</li>
+                        <li>Knowledge of testing frameworks (Jest, React Testing Library)</li>
+                    </ul>
+                    
+                    <p><strong>Perks:</strong></p>
+                    <ul class="benefits-list">
+                        <li>Competitive salary and annual bonus</li>
+                        <li>Comprehensive health, dental, and vision insurance</li>
+                        <li>401(k) with company matching</li>
+                        <li>Professional development opportunities</li>
+                        <li>Modern office in downtown Manhattan</li>
+                    </ul>
+                `,
+                skills: ["React", "TypeScript", "CSS", "GraphQL"],
+                features: ["Full-time", "Mid Level", "Gym Membership"],
+                category: "technology"
+            }
+        ];
+
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', function() {
+            setupEventListeners();
+            initializeFilters();
+        });
+
+        // Setup event listeners
+        function setupEventListeners() {
+            // Search form submission
+            document.getElementById('jobSearchForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                performSearch();
+            });
+
+            // Filter changes
+            document.querySelectorAll('input[type="checkbox"], input[type="radio"]').forEach(input => {
+                input.addEventListener('change', filterJobs);
+            });
+
+            // Salary range
+            document.querySelector('.salary-range').addEventListener('input', filterJobs);
+
+            // Search tags
+            document.querySelectorAll('.search-tag').forEach(tag => {
+                tag.addEventListener('click', function() {
+                    const tagText = this.textContent;
+                    document.getElementById('jobKeywords').value = tagText;
+                    performSearch();
+                });
+            });
+
+            // Sort options
+            document.querySelector('.search-select').addEventListener('change', sortJobs);
+        }
+
+        // Initialize filters
+        function initializeFilters() {
+            // Set initial filter values
+            console.log('Filters initialized');
+        }
+
+        // Perform search
+        function performSearch() {
+            const keywords = document.getElementById('jobKeywords').value.toLowerCase();
+            const location = document.getElementById('jobLocation').value.toLowerCase();
+            const category = document.getElementById('jobCategory').value;
+            
+            // Show loading state
+            const container = document.getElementById('jobsContainer');
+            container.innerHTML = '<div class="empty-state"><i class="fas fa-spinner fa-spin"></i><h3>Searching jobs...</h3></div>';
+            
+            // Simulate API call delay
+            setTimeout(() => {
+                filterJobs();
+            }, 1000);
+        }
+
+        // Filter jobs based on criteria
+        function filterJobs() {
+            const jobCards = document.querySelectorAll('.job-card');
+            let visibleCount = 0;
+            
+            jobCards.forEach(card => {
+                // In a real application, this would filter based on actual job data
+                // For demo purposes, we're just showing all cards
+                card.style.display = 'block';
+                visibleCount++;
+            });
+            
+            // Update results count
+            document.querySelector('.results-count').textContent = `Showing ${visibleCount} of ${jobCards.length} jobs`;
+        }
+
+        // Sort jobs
+        function sortJobs() {
+            const sortBy = document.querySelector('.search-select').value;
+            const container = document.getElementById('jobsContainer');
+            const jobCards = Array.from(container.querySelectorAll('.job-card'));
+            
+            // Simple sorting logic for demo
+            jobCards.sort((a, b) => {
+                const aMatch = parseInt(a.querySelector('.job-match span:last-child').textContent);
+                const bMatch = parseInt(b.querySelector('.job-match span:last-child').textContent);
+                
+                if (sortBy === 'Best Match') {
+                    return bMatch - aMatch;
+                }
+                return 0;
+            });
+            
+            // Reappend sorted jobs
+            jobCards.forEach(card => container.appendChild(card));
+        }
+
+        // Save job to favorites
+        function saveJob(jobId) {
+            const job = jobs.find(j => j.id === jobId);
+            if (!job) return;
+            
+            // Toggle save state
+            const button = event.target.closest('.btn');
+            const icon = button.querySelector('i');
+            
+            if (icon.classList.contains('far')) {
+                icon.classList.remove('far');
+                icon.classList.add('fas');
+                button.innerHTML = '<i class="fas fa-bookmark"></i> Saved';
+                alert(`"${job.title}" saved to your favorites!`);
+            } else {
+                icon.classList.remove('fas');
+                icon.classList.add('far');
+                button.innerHTML = '<i class="far fa-bookmark"></i> Save';
+                alert(`"${job.title}" removed from favorites.`);
+            }
+        }
+
+        // View job details
+        function viewJobDetails(jobId) {
+            const job = jobs.find(j => j.id === jobId);
+            if (!job) return;
+            
+            let modalContent = `
+                <div class="job-detail-section">
+                    <h2>${job.title}</h2>
+                    <p><strong>${job.company}</strong> • ${job.location}</p>
+                    <div class="job-features" style="margin: 1rem 0;">
+                        ${job.features.map(feature => `<span class="feature-tag">${feature}</span>`).join('')}
+                    </div>
+                    <div class="job-salary" style="font-size: 1.2rem;">${job.salary}</div>
+                </div>
+                
+                <div class="job-detail-section">
+                    <div class="job-detail-title">Job Description</div>
+                    <div class="job-detail-content">
+                        ${job.fullDescription}
+                    </div>
+                </div>
+                
+                <div class="job-detail-section">
+                    <div class="job-detail-title">Required Skills</div>
+                    <div class="job-skills">
+                        ${job.skills.map(skill => `<span class="skill-tag">${skill}</span>`).join('')}
+                    </div>
+                </div>
+                
+                <div class="job-detail-section">
+                    <div class="job-detail-title">Application Details</div>
+                    <div class="job-detail-content">
+                        <p><strong>Posted:</strong> ${job.posted}</p>
+                        <p><strong>Applicants:</strong> ${job.applicants} applicants</p>
+                        <p><strong>Your Match:</strong> ${job.match}%</p>
+                    </div>
+                </div>
+                
+                <div style="display: flex; gap: 1rem; margin-top: 2rem;">
+                    <button class="btn btn-outline" onclick="saveJob(${job.id})">
+                        <i class="far fa-bookmark"></i> Save Job
+                    </button>
+                    <button class="btn btn-primary" style="flex: 1;" onclick="applyForJob(${job.id})">
+                        <i class="fas fa-paper-plane"></i> Apply Now
+                    </button>
+                </div>
+            `;
+            
+            document.getElementById('modalTitle').textContent = job.title;
+            document.getElementById('modalContent').innerHTML = modalContent;
+            document.getElementById('jobModal').classList.add('active');
+        }
+
+        // Apply for job
+        function applyForJob(jobId) {
+            const job = jobs.find(j => j.id === jobId);
+            if (!job) return;
+            
+            alert(`Applying for "${job.title}" at ${job.company}...\n\nYou will be redirected to the application form.`);
+            closeModal();
+            // In real application, this would navigate to application page
+        }
+
+        // Close modal
+        function closeModal() {
+            document.getElementById('jobModal').classList.remove('active');
+        }
+
+        // Close modal when clicking outside
+        window.addEventListener('click', function(event) {
+            const modal = document.getElementById('jobModal');
+            if (event.target === modal) {
+                closeModal();
+            }
+        });
+
+        // Simulate real-time job updates
+        setInterval(() => {
+            // In a real application, this would check for new jobs
+            console.log('Checking for new job postings...');
+        }, 60000); // Check every minute
+    </script>
+</body>
+</html>
